@@ -1,13 +1,14 @@
+DNGR GOODS  - BRANDGUIDE
+
+MASTER HTML:
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>DNGR GOODS</title>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script><script src="https://unpkg.com/@dotlottie/player-component@2.7.12/dist/dotlottie-player.mjs" type="module"></script>
-<dotlottie-player src="https://lottie.host/d78de815-63f5-4083-8b23-d3833bcfd65f/1aTwDaznYJ.lottie" background="transparent" speed=".5" repeat='' style="width: 100%; height: 50%" loop autoplay hover></dotlottie-player>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-  <style>
+  <title>Brutalist Brand Guide</title>
   <style>
     @font-face {
       font-family: "Neue Montreal Mono";
@@ -16,259 +17,222 @@
 
     body {
       margin: 0;
-      overflow: hidden;
-      background: repeating-linear-gradient(
-      180deg,               /* angle */
-      #000000,             /* colour 1 */
-      #0000FF 20px,        /* stop */
-      #000000 60px,        /* colour 2 */
-      #0000FF 50px         /* next stop */
-      
-    );
-      font-family: "Neue Montreal Mono", monospace;
+      background-color: #000;
       color: white;
+      font-family: "Neue Montreal Mono", monospace;
+      overflow: hidden;
+      transition: background-color 0.3s, color 0.3s;
     }
 
-    .branding {
-      position: fixed;
-      top: 20px;
-      left: 20px;
-      font-size: 24px;
-    }
-
-    .footer {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      text-align: right;
-      font-size: 12px;
-      line-height: 1.4;
-    }
-
-    .content {
+    .container {
       position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      z-index: 10;
-      max-width: 400px;
-      min-width: 300px;
-      height: 550px;
-      overflow-y: auto;
-      overflow-x: hidden;
+      width: 400px;
+      height: auto;
+      min-height: 150px;
+      padding: 20px;
       border: 2px solid white;
-      padding: 10px;
-      background: repeating-linear-gradient(
-      180deg,               /* angle */
-      #000000,             /* colour 1 */
-      #0000FF 20px,        /* stop */
-      #000000 50px,        /* colour 2 */
-      #0000FF 40px         /* next stop */
-    );;
+      background-color: #111;
       cursor: grab;
+      z-index: 1;
+      resize: both;
+      overflow: auto;
+      transition: background-color 0.3s, border-color 0.3s;
     }
-    
-    .lottie-wrapper {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 5;
-  width: 100%;
-  max-width: 600px;
-  height: auto;
-  pointer-events: none; /* So it doesn’t interfere with interactions */
-}
 
-.lottie-wrapper dotlottie-player {
-  width: 100%;
-  height: auto;
-}
-
-    .content:active {
+    .container:active {
       cursor: grabbing;
     }
 
-    .content h1 {
-      font-size: 36px;
-      margin-bottom: 20px;
-    }
-    .content il {font-weight: bold;
-      font-size: 12px;
-      margin-bottom: 20px;
-      color: blue;
-    }
-
-    .content ul {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-      font-size: 12px;
-      line-height: .5;
-    }
-
-    .content ul li {
-      margin-bottom: 10px;
-      cursor: pointer;
-    }
-
-    .content ul li:hover {
-      text-decoration: underline;
-    }
-
-    .content ul li span {
-      font-weight: bold;
-      font-size: 12px;
-      margin-right: 10px;
-    }
-
-    .content::-webkit-scrollbar, .preview::-webkit-scrollbar {
+    .container::-webkit-scrollbar {
       width: 12px;
     }
 
-    .content::-webkit-scrollbar-thumb, .preview::-webkit-scrollbar-thumb {
+    .container::-webkit-scrollbar-thumb {
       background: white;
-      border: 2px #272100;
+      border: 2px solid black;
     }
 
-    .content::-webkit-scrollbar-track, .preview::-webkit-scrollbar-track {
-      background: #272100;
-      border: 2px solid white;
-    }
-
-    .preview {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      z-index: 10;
-      max-width: 800px;
-      min-width: 200px;
-      height: 400px;
-      min-height: 300px;
-      border: 2px solid white;
-      padding: 10px;
+    .container::-webkit-scrollbar-track {
       background: black;
-    );
-      overflow: auto;
-      resize: both;
-      cursor: default;
+      border: 2px solid white;
     }
-    
 
-    .preview h2 {
+    h1, h2, h3 {
+      margin: 0;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    h1 {
+      font-size: 36px;
+      margin-bottom: 20px;
+    }
+
+    h2 {
       font-size: 28px;
-      margin-bottom: 20px;
+      margin-bottom: 15px;
     }
 
-    .preview img {
-      max-width: 100%;
-      margin-bottom: 20px;
-      border: 2px solid blue;
+    h3 {
+      font-size: 20px;
+      margin-bottom: 10px;
     }
 
-    .close-button {
-      position: absolute;
+    p, ul {
+      font-size: 14px;
+      line-height: 1.5;
+      margin: 0 0 10px 0;
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    ul li {
+      margin-bottom: 5px;
+    }
+
+    .symbol-list {
+      font-size: 18px;
+    }
+
+    .symbol-list span {
+      margin-right: 10px;
+    }
+
+    .color-box {
+      width: 50px;
+      height: 50px;
+      border: 2px solid white;
+      margin-right: 10px;
+      display: inline-block;
+    }
+
+    .image-preview {
+      width: 100%;
+      height: 150px;
+      border: 2px solid white;
+      background-color: #333;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 10px;
+    }
+
+    .button {
+      position: fixed;
+      padding: 10px 20px;
+      border: 2px solid white;
+      background: transparent;
+      color: white;
+      text-transform: uppercase;
+      font-size: 12px;
+      cursor: pointer;
+      text-align: center;
+      z-index: 1000;
+    }
+
+    .button:hover {
+      background: white;
+      color: black;
+    }
+
+    .invert-button {
       top: 10px;
       right: 10px;
-      padding: 5px 10px;
-      background: #ffffff00;
-      color: blue;
-      border: none;
-      cursor: pointer;
-      font-size: 16px;
-      font-family: "Neue Montreal Mono", monospace;
     }
 
-    .close-button:hover {
-      color: black;
-      background: white;
-    }
-
-    .close-button::before {
-      content: "X";
-      font-weight: bold;
-      font-size: 16px;
-    }
-
-    .three-container {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      pointer-events: none;
-      z-index: 1;
+    .reset-button {
+      bottom: 10px;
+      left: 10px;
     }
   </style>
-  
 </head>
 <body>
-  <div class="branding"></div>
+  <!-- Buttons -->
+  <button class="button invert-button">Invert Colors</button>
+  <button class="button reset-button">Re-Center Containers</button>
 
-  <div class="content">
-      <h4>PROJECTS MENU</h4>
-    
-    <ul>
-        
-      <li data-project="SOLARIS"><span>I</span> SOLARIS — <span>2023</span></li>
-      <li data-project="GO MAD"><span>II</span> GO MAD — <span>2023</span></li>
-      <li data-project="LSW"><span>III</span> LSW — <span>2023</span></li>
-      <li data-project="VANCE LIVING"><span>IV</span> VANCE LIVING — <span>2023</span></li>
-      <li data-project="ABOUT DNGR"><span>V</span> ABOUT DNGR — <span>2023</span></li>
-      <li data-project="NOCTURNAL INGESTIONS"><span>VI</span> NOCTURNAL INGESTIONS — <span>2023</span></li>
-      
-    </ul>
-    
-    <h5><br>CLICK HOLD & DRAG <br><br><img src="https://dngrgoods.com/temp/wp-content/uploads/2025/06/dog-drag.gif" style="width:50%;height:50%; display: inline-block;"><br><br>OPEN PROJECTS, AS MANY AS YOU  <br>WANT AND DRAG WHERE YOU WANT</h5> <il>* TRY BOTHERING THE BACKGROUND PARTICLES <br>BY POINTING THE CURSOR AT THEM</il>
-  </div>
-  <div class="lottie-wrapper">
-  <dotlottie-player
-    src="https://lottie.host/d78de815-63f5-4083-8b23-d3833bcfd65f/1aTwDaznYJ.lottie"
-    background="transparent"
-    speed="0.5"
-    loop
-    autoplay
-    hover>
-  </dotlottie-player>
-</div>
-
-  <div class="footer">
-      
-    DNGR GOODS<br>
-    DANIAL GRAHAM<br>
-    GOODS AND VISUAL SERVICES<br>
-    DANIAL@DNGRGOODS.COM<br>
-    0400 165 501
+  <!-- Containers -->
+  <div class="container" id="branding-container">
+    <h1>Brand Guide</h1>
+    <h2>Brand Overview</h2>
+    <p>
+      DNGR GOODS is a minimalist, brutalist-inspired brand specializing in typography, design systems, and modular branding solutions.
+    </p>
+    <p>
+      Founded by Danial Graham, DNGR GOODS combines raw aesthetics with strategic thinking, creating unique identities for global brands.
+    </p>
   </div>
 
-  <div class="three-container"></div>
+  <div class="container" id="typography-container">
+    <h2>Typography</h2>
+    <p>Primary Font: <strong>Neue Montreal Mono</strong></p>
+    <p>
+      Examples:<br>
+      <span style="font-size: 18px;">ABCDEFGHIJKLMNOPQRSTUVWXYZ</span><br>
+      <span style="font-size: 18px;">abcdefghijklmnopqrstuvwxyz</span><br>
+      <span style="font-size: 18px;">0123456789</span><br>
+      <span class="symbol-list">
+        ✷ ⚙ ☯ ☼ ⦼ ❀ ⚅ ⚆ ♽ ♡ ❃
+      </span>
+    </p>
+  </div>
+
+  <div class="container" id="color-palette-container">
+    <h2>Color Palette</h2>
+    <div>
+      <div class="color-box" style="background: #000;"></div> #000000 Black<br>
+      <div class="color-box" style="background: #fff;"></div> #FFFFFF White<br>
+      <div class="color-box" style="background: #111;"></div> #111111 Dark Gray<br>
+    </div>
+  </div>
+
+  <div class="container" id="images-container">
+    <h2>Image & Content Containers</h2>
+    <div class="image-preview">Image 1</div>
+    <div class="image-preview">Image 2</div>
+    <div class="image-preview">Image 3</div>
+  </div>
+
+  <div class="container" id="interactive-container">
+    <h2>Interactive Elements</h2>
+    <p>Buttons:</p>
+    <div class="button">Click Me</div>
+    <div class="button">Hover Over</div>
+  </div>
 
   <script>
-    const openPreviews = {};
+    let highestZIndex = 10; // Initial z-index
+    let initialPositions = [];
 
     const makeDraggable = (element) => {
       let isDragging = false;
-      let dragStartX, dragStartY, elementStartX, elementStartY;
+      let startX, startY, offsetX, offsetY;
+
+      const bringToFront = () => {
+        element.style.zIndex = `${++highestZIndex}`;
+      };
 
       const startDrag = (e) => {
         isDragging = true;
-        dragStartX = e.touches ? e.touches[0].clientX : e.clientX;
-        dragStartY = e.touches ? e.touches[0].clientY : e.clientY;
-        elementStartX = element.offsetLeft;
-        elementStartY = element.offsetTop;
+        bringToFront();
+        startX = e.touches ? e.touches[0].clientX : e.clientX;
+        startY = e.touches ? e.touches[0].clientY : e.clientY;
+        offsetX = element.offsetLeft;
+        offsetY = element.offsetTop;
         element.style.cursor = 'grabbing';
-        element.style.zIndex = `${++zIndex}`;
       };
 
       const drag = (e) => {
         if (!isDragging) return;
-        const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-        const clientY = e.touches ? e.touches[0].clientY : e.clientY;
-        const deltaX = clientX - dragStartX;
-        const deltaY = clientY - dragStartY;
-        element.style.left = `${elementStartX + deltaX}px`;
-        element.style.top = `${elementStartY + deltaY}px`;
+        const currentX = e.touches ? e.touches[0].clientX : e.clientX;
+        const currentY = e.touches ? e.touches[0].clientY : e.clientY;
+        const dx = currentX - startX;
+        const dy = currentY - startY;
+        element.style.left = `${offsetX + dx}px`;
+        element.style.top = `${offsetY + dy}px`;
       };
 
       const stopDrag = () => {
@@ -276,197 +240,70 @@
         element.style.cursor = 'grab';
       };
 
-      element.addEventListener('mousedown', (e) => startDrag(e));
-      element.addEventListener('mousemove', (e) => drag(e));
+      element.addEventListener('mousedown', startDrag);
+      element.addEventListener('mousemove', drag);
       element.addEventListener('mouseup', stopDrag);
       element.addEventListener('mouseleave', stopDrag);
 
-      element.addEventListener('touchstart', (e) => startDrag(e));
-      element.addEventListener('touchmove', (e) => drag(e));
+      element.addEventListener('touchstart', startDrag);
+      element.addEventListener('touchmove', drag);
       element.addEventListener('touchend', stopDrag);
       element.addEventListener('touchcancel', stopDrag);
+
+      element.addEventListener('mousedown', bringToFront);
+      element.addEventListener('touchstart', bringToFront);
     };
 
-    let zIndex = 10;
+    const centerRandomPlacement = (container) => {
+      const { innerWidth: screenWidth, innerHeight: screenHeight } = window;
 
-    const projectsContainer = document.querySelector('.content');
-    makeDraggable(projectsContainer);
+      const maxOffsetX = screenWidth / 4; // Containers will be placed within 1/4 of the screen width from the center
+      const maxOffsetY = screenHeight / 4; // Containers will be placed within 1/4 of the screen height from the center
 
-    const projectData = {
-      'SOLARIS': {
-        image: 'https://dngrgoods.com/wp-content/uploads/2023/02/SOLARIS-BRAND-GUIDE.gif',
-        description: 'Solaris is an exploration into minimal solar housing for urban spaces.'
-      },
-      'GO MAD': {
-        image: 'path-to-go-mad-image.jpg',
-        description: 'Go Mad is an energetic project aimed at capturing human creativity.'
-      },
-      'LSW': {
-        image: 'path-to-lsw-image.jpg',
-        description: 'LSW encapsulates the essence of living simply with water themes.'
-      },
-      'VANCE LIVING': {
-        image: 'path-to-vance-living-image.jpg',
-        description: 'Vance Living is a bold project bringing modular architecture into daily life.'
-      },
-      'ABOUT DNGR': {
-        image: 'https://dngrgoods.com/wp-content/uploads/2023/07/DSC01289-1.png',
-        description: '* CREATIVE DIRECTOR DANIAL GRAHAM <br><br> I SPECIALISE IN BRANDING IDENTITY, ART DIRECTION, TYPOGRAPHY, LOGO DESIGN, STRATEGIC DESIGN, MOTION GRAPHICS, PHOTOGRAPHY AND AM AN EXPERIENCED PROJECT MANAGER IN COMMERCIAL SIGNAGE. I AM A CREATIVE THINKER WHO IS EQUALLY COMFORTABLE WITH STRATEGY, AND I BRING A SOLUTIONS-ORIENTED APPROACH TO ALL MY WORK.'
-      },
-      'NOCTURNAL INGESTIONS'
-      : {
-        image: 'https://dngrgoods.com/wp-content/uploads/2023/02/NOCTURNAL-INGESTIONS.gif',
-        description: 'Nocturnal Ingestions is the late night (night eaters) restaurant identity designed with The Bendigo Hotel in Collingwood, a venue known for its loud gigs and cheap pints.<br><br> Signage was built to tie in with the venue, bringing its rough interior and punk atmosphere through.<br><br><br><img src="https://dngrgoods.com/wp-content/uploads/2023/02/NOCTURNAL-INGESTIONS.gif" alt="Description of image" style="width:100%;height:100%; display: inline-block;"> <br><br><br>The menu identity took shape alongside this, gritty, loud. Cheap burger nights and snack drops were promoted. Illustration became a larger part of the identity. Hand drawn, keeping it messy. <br><br>Those drawings became merch, menus, stickers, socials, pretty much anywhere we could slap them. It gave the brand a personality that felt like it could live in the crowd or behind the bar.Nocturnal Ingestions was never meant to feel clean or overly designed. It’s there to feed the chaos and leave a bit of grease behind. Just like the venue.'
-      }
+      const randomX = screenWidth / 2 + (Math.random() - 0.5) * maxOffsetX - container.offsetWidth / 2;
+      const randomY = screenHeight / 2 + (Math.random() - 0.5) * maxOffsetY - container.offsetHeight / 2;
+
+      const clampedX = Math.min(Math.max(0, randomX), screenWidth - container.offsetWidth);
+      const clampedY = Math.min(Math.max(0, randomY), screenHeight - container.offsetHeight);
+
+      container.style.left = `${clampedX}px`;
+      container.style.top = `${clampedY}px`;
+
+      initialPositions.push({ left: clampedX, top: clampedY });
     };
 
-    const createPreviewContainer = (project) => {
-      const data = projectData[project] || { image: '', description: 'Details coming soon.' };
+    const containers = document.querySelectorAll('.container');
+    containers.forEach((container) => {
+      centerRandomPlacement(container);
+      makeDraggable(container);
+    });
 
-      // If preview already exists, reset its position and size
-      if (openPreviews[project]) {
-        const previewContainer = openPreviews[project];
-        previewContainer.style.top = '50%';
-        previewContainer.style.left = '50%';
-        previewContainer.style.width = '600px';
-        previewContainer.style.height = '400px';
-        previewContainer.style.transform = 'translate(-50%, -50%)';
-        return;
-      }
+    // Invert colors
+    document.querySelector('.invert-button').addEventListener('click', () => {
+      document.body.classList.toggle('inverted');
+      document.body.style.backgroundColor = document.body.style.backgroundColor === 'white' ? '#000' : 'white';
+      document.body.style.color = document.body.style.color === 'black' ? 'white' : 'black';
 
-      // Create a new preview container
-      const previewContainer = document.createElement('div');
-      previewContainer.className = 'preview';
-      previewContainer.style.top = '50%';
-      previewContainer.style.left = '50%';
-      previewContainer.style.width = '600px';
-      previewContainer.style.height = '400px';
-      previewContainer.style.transform = 'translate(-50%, -50%)';
-      previewContainer.style.zIndex = `${++zIndex}`;
-
-      previewContainer.innerHTML = `
-        <button class="close-button"></button>
-        <h2>${project}</h2>
-        <img src="${data.image}" alt="${project} Image">
-        <p>${data.description}</p>
-      `;
-
-      previewContainer.querySelector('.close-button').addEventListener('click', () => {
-        previewContainer.remove();
-        delete openPreviews[project];
-      });
-
-      makeDraggable(previewContainer);
-
-      document.body.appendChild(previewContainer);
-      openPreviews[project] = previewContainer;
-    };
-
-    document.querySelectorAll('.content ul li').forEach((item) => {
-      item.addEventListener('click', () => {
-        const project = item.getAttribute('data-project');
-        createPreviewContainer(project);
+      containers.forEach((container) => {
+        container.style.backgroundColor = container.style.backgroundColor === '#111' ? '#eee' : '#111';
+        container.style.borderColor = container.style.borderColor === 'black' ? 'white' : 'black';
       });
     });
 
-    const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-    const renderer = new THREE.WebGLRenderer({ alpha: true });
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    document.querySelector('.three-container').appendChild(renderer.domElement);
-
-    const characters = ["✷", "☯", "☼", "⚆", "⚠" ];
-    const particles = [];
-    const material = new THREE.SpriteMaterial({ color: 0xffffff });
-    const particleCount = 200;
-
-    const createTextTexture = (text) => {
-      const canvas = document.createElement("canvas");
-      const context = canvas.getContext("2d");
-      canvas.width = 64;
-      canvas.height = 64;
-
-      context.fillStyle = "#ffffff";
-      context.font = "bold 48px 'Neue Montreal Mono', monospace";
-      context.textAlign = "center";
-      context.textBaseline = "middle";
-      context.clearRect(0, 0, canvas.width, canvas.height);
-      context.fillText(text, canvas.width / 2, canvas.height / 2);
-
-      return new THREE.CanvasTexture(canvas);
-    };
-
-    for (let i = 0; i < particleCount; i++) {
-      const char = characters[Math.floor(Math.random() * characters.length)];
-      const texture = createTextTexture(char);
-
-      const spriteMaterial = new THREE.SpriteMaterial({ map: texture });
-      const sprite = new THREE.Sprite(spriteMaterial);
-
-      sprite.scale.set(1, 1, 1);
-      sprite.position.set(
-        (Math.random() - 0.5) * 100,
-        (Math.random() - 0.5) * 100,
-        (Math.random() - 0.5) * 100
-      );
-
-      sprite.userData.velocity = new THREE.Vector3(
-        Math.random() * 0.2 - 0.1,
-        Math.random() * 0.2 - 0.1,
-        Math.random() * 0.2 - 0.1
-      );
-      scene.add(sprite);
-      particles.push(sprite);
-    }
-
-    camera.position.z = 50;
-
-    const raycaster = new THREE.Raycaster();
-    const mouse = new THREE.Vector2();
-
-    window.addEventListener('mousemove', (event) => {
-      mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
-      mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+    // Re-center containers
+    document.querySelector('.reset-button').addEventListener('click', () => {
+      containers.forEach((container, index) => {
+        const { left, top } = initialPositions[index];
+        container.style.left = `${left}px`;
+        container.style.top = `${top}px`;
+      });
     });
 
-    function animate() {
-      requestAnimationFrame(animate);
-
-      raycaster.setFromCamera(mouse, camera);
-
-      particles.forEach((particle) => {
-        const intersects = raycaster.intersectObject(particle);
-
-        if (intersects.length > 0) {
-          const avoidance = new THREE.Vector3()
-            .subVectors(particle.position, raycaster.ray.origin)
-            .normalize()
-            .multiplyScalar(2);
-          particle.position.add(avoidance);
-        } else {
-          particle.position.add(particle.userData.velocity);
-
-          if (particle.position.length() > 200) {
-            particle.position.set(
-              (Math.random() - 0.5) * 100,
-              (Math.random() - 0.5) * 100,
-              (Math.random() - 0.5) * 100
-            );
-          }
-        }
-      });
-
-      renderer.render(scene, camera);
-    }
-
-    animate();
-
+    // Reposition containers on resize
     window.addEventListener('resize', () => {
-      renderer.setSize(window.innerWidth, window.innerHeight);
-      camera.aspect = window.innerWidth / window.innerHeight;
-      camera.updateProjectionMatrix();
+      initialPositions = [];
+      containers.forEach(centerRandomPlacement);
     });
   </script>
-  
 </body>
 </html>
