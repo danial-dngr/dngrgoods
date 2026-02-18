@@ -1,321 +1,305 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  <meta http-equiv="Content-Style-Type" content="text/css">
-  <title></title>
-  <meta name="Generator" content="Cocoa HTML Writer">
-  <meta name="CocoaVersion" content="2575.7">
-  <style type="text/css">
-    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
-    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DNGR GOODS</title>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+<style>
+
+/* ===== GLOBAL ===== */
+
+body {
+  margin: 0;
+  overflow: hidden;
+  font-family: monospace;
+  color: white;
+  background: repeating-linear-gradient(
+    180deg,
+    #000 0px,
+    #000 25px,
+    #0011ff 25px,
+    #0011ff 50px
+  );
+}
+
+/* ===== DRAG WINDOWS ===== */
+
+.window {
+  position: absolute;
+  background: black;
+  border: 2px solid white;
+  padding: 16px;
+  cursor: grab;
+  resize: both;
+  overflow: auto;
+  min-width: 250px;
+  min-height: 200px;
+}
+
+.window:active {
+  cursor: grabbing;
+}
+
+.menu {
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 320px;
+  height: 500px;
+  z-index: 20;
+}
+
+.menu h3 {
+  margin-top: 0;
+}
+
+.menu ul {
+  list-style: none;
+  padding: 0;
+  font-size: 13px;
+}
+
+.menu li {
+  margin-bottom: 12px;
+  cursor: pointer;
+}
+
+.menu li:hover {
+  text-decoration: underline;
+}
+
+.footer {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  font-size: 12px;
+  text-align: right;
+  z-index: 30;
+}
+
+/* ===== CLOSE BUTTON ===== */
+
+.close {
+  position: absolute;
+  top: 8px;
+  right: 10px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.close:hover {
+  color: black;
+  background: white;
+}
+
+/* ===== THREE BACKGROUND ===== */
+
+#three-bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  z-index: 1;
+}
+
+</style>
 </head>
 <body>
-<p class="p1">&lt;!DOCTYPE html&gt;</p>
-<p class="p1">&lt;html lang="en"&gt;</p>
-<p class="p1">&lt;head&gt;</p>
-<p class="p1">&lt;meta charset="UTF-8"&gt;</p>
-<p class="p1">&lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;</p>
-<p class="p1">&lt;title&gt;DNGR GOODS&lt;/title&gt;</p>
-<p class="p2"><br></p>
-<p class="p1">&lt;script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"&gt;&lt;/script&gt;</p>
-<p class="p2"><br></p>
-<p class="p1">&lt;style&gt;</p>
-<p class="p2"><br></p>
-<p class="p1">/* ===== GLOBAL ===== */</p>
-<p class="p2"><br></p>
-<p class="p1">body {</p>
-<p class="p1"><span class="Apple-converted-space">  </span>margin: 0;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>overflow: hidden;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>font-family: monospace;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>color: white;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>background: repeating-linear-gradient(</p>
-<p class="p1"><span class="Apple-converted-space">    </span>180deg,</p>
-<p class="p1"><span class="Apple-converted-space">    </span>#000 0px,</p>
-<p class="p1"><span class="Apple-converted-space">    </span>#000 25px,</p>
-<p class="p1"><span class="Apple-converted-space">    </span>#0011ff 25px,</p>
-<p class="p1"><span class="Apple-converted-space">    </span>#0011ff 50px</p>
-<p class="p1"><span class="Apple-converted-space">  </span>);</p>
-<p class="p1">}</p>
-<p class="p2"><br></p>
-<p class="p1">/* ===== DRAG WINDOWS ===== */</p>
-<p class="p2"><br></p>
-<p class="p1">.window {</p>
-<p class="p1"><span class="Apple-converted-space">  </span>position: absolute;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>background: black;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>border: 2px solid white;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>padding: 16px;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>cursor: grab;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>resize: both;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>overflow: auto;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>min-width: 250px;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>min-height: 200px;</p>
-<p class="p1">}</p>
-<p class="p2"><br></p>
-<p class="p1">.window:active {</p>
-<p class="p1"><span class="Apple-converted-space">  </span>cursor: grabbing;</p>
-<p class="p1">}</p>
-<p class="p2"><br></p>
-<p class="p1">.menu {</p>
-<p class="p1"><span class="Apple-converted-space">  </span>top: 50%;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>left: 50%;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>transform: translate(-50%, -50%);</p>
-<p class="p1"><span class="Apple-converted-space">  </span>width: 320px;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>height: 500px;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>z-index: 20;</p>
-<p class="p1">}</p>
-<p class="p2"><br></p>
-<p class="p1">.menu h3 {</p>
-<p class="p1"><span class="Apple-converted-space">  </span>margin-top: 0;</p>
-<p class="p1">}</p>
-<p class="p2"><br></p>
-<p class="p1">.menu ul {</p>
-<p class="p1"><span class="Apple-converted-space">  </span>list-style: none;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>padding: 0;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>font-size: 13px;</p>
-<p class="p1">}</p>
-<p class="p2"><br></p>
-<p class="p1">.menu li {</p>
-<p class="p1"><span class="Apple-converted-space">  </span>margin-bottom: 12px;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>cursor: pointer;</p>
-<p class="p1">}</p>
-<p class="p2"><br></p>
-<p class="p1">.menu li:hover {</p>
-<p class="p1"><span class="Apple-converted-space">  </span>text-decoration: underline;</p>
-<p class="p1">}</p>
-<p class="p2"><br></p>
-<p class="p1">.footer {</p>
-<p class="p1"><span class="Apple-converted-space">  </span>position: fixed;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>bottom: 20px;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>right: 20px;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>font-size: 12px;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>text-align: right;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>z-index: 30;</p>
-<p class="p1">}</p>
-<p class="p2"><br></p>
-<p class="p1">/* ===== CLOSE BUTTON ===== */</p>
-<p class="p2"><br></p>
-<p class="p1">.close {</p>
-<p class="p1"><span class="Apple-converted-space">  </span>position: absolute;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>top: 8px;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>right: 10px;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>cursor: pointer;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>font-weight: bold;</p>
-<p class="p1">}</p>
-<p class="p2"><br></p>
-<p class="p1">.close:hover {</p>
-<p class="p1"><span class="Apple-converted-space">  </span>color: black;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>background: white;</p>
-<p class="p1">}</p>
-<p class="p2"><br></p>
-<p class="p1">/* ===== THREE BACKGROUND ===== */</p>
-<p class="p2"><br></p>
-<p class="p1">#three-bg {</p>
-<p class="p1"><span class="Apple-converted-space">  </span>position: fixed;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>top: 0;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>left: 0;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>pointer-events: none;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>z-index: 1;</p>
-<p class="p1">}</p>
-<p class="p2"><br></p>
-<p class="p1">&lt;/style&gt;</p>
-<p class="p1">&lt;/head&gt;</p>
-<p class="p1">&lt;body&gt;</p>
-<p class="p2"><br></p>
-<p class="p1">&lt;div id="three-bg"&gt;&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1">&lt;div class="window menu" id="menu"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;h3&gt;PROJECTS&lt;/h3&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;ul&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;li data-project="SOLARIS"&gt;I — SOLARIS&lt;/li&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;li data-project="NOCTURNAL"&gt;II — NOCTURNAL INGESTIONS&lt;/li&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;li data-project="ABOUT"&gt;III — ABOUT DNGR&lt;/li&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;/ul&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;p style="font-size:11px;"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>DRAG WINDOWS.&lt;br&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>OPEN MULTIPLE.&lt;br&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>DISTURB THE PARTICLES.</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;/p&gt;</p>
-<p class="p1">&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1">&lt;div class="footer"&gt;</p>
-<p class="p1">DNGR GOODS&lt;br&gt;</p>
-<p class="p1">DANIAL GRAHAM&lt;br&gt;</p>
-<p class="p1">danial@dngrgoods.com</p>
-<p class="p1">&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1">&lt;script&gt;</p>
-<p class="p2"><br></p>
-<p class="p1">/* ===========================</p>
-<p class="p1"><span class="Apple-converted-space">   </span>DRAG LOGIC</p>
-<p class="p1">=========================== */</p>
-<p class="p2"><br></p>
-<p class="p1">let highestZ = 20;</p>
-<p class="p2"><br></p>
-<p class="p1">function makeDraggable(el) {</p>
-<p class="p1"><span class="Apple-converted-space">  </span>let offsetX = 0;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>let offsetY = 0;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>let isDragging = false;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">  </span>el.addEventListener("mousedown", (e) =&gt; {</p>
-<p class="p1"><span class="Apple-converted-space">    </span>isDragging = true;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>highestZ++;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>el.style.zIndex = highestZ;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>offsetX = e.clientX - el.offsetLeft;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>offsetY = e.clientY - el.offsetTop;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>});</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">  </span>document.addEventListener("mousemove", (e) =&gt; {</p>
-<p class="p1"><span class="Apple-converted-space">    </span>if (!isDragging) return;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>el.style.left = e.clientX - offsetX + "px";</p>
-<p class="p1"><span class="Apple-converted-space">    </span>el.style.top = e.clientY - offsetY + "px";</p>
-<p class="p1"><span class="Apple-converted-space">    </span>el.style.transform = "none";</p>
-<p class="p1"><span class="Apple-converted-space">  </span>});</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">  </span>document.addEventListener("mouseup", () =&gt; {</p>
-<p class="p1"><span class="Apple-converted-space">    </span>isDragging = false;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>});</p>
-<p class="p1">}</p>
-<p class="p2"><br></p>
-<p class="p1">makeDraggable(document.getElementById("menu"));</p>
-<p class="p2"><br></p>
-<p class="p1">/* ===========================</p>
-<p class="p1"><span class="Apple-converted-space">   </span>PROJECT DATA</p>
-<p class="p1">=========================== */</p>
-<p class="p2"><br></p>
-<p class="p1">const projects = {</p>
-<p class="p1"><span class="Apple-converted-space">  </span>SOLARIS: {</p>
-<p class="p1"><span class="Apple-converted-space">    </span>image: "https://dngrgoods.com/wp-content/uploads/2023/02/SOLARIS-BRAND-GUIDE.gif",</p>
-<p class="p1"><span class="Apple-converted-space">    </span>text: "Minimal solar housing identity exploration."</p>
-<p class="p1"><span class="Apple-converted-space">  </span>},</p>
-<p class="p1"><span class="Apple-converted-space">  </span>NOCTURNAL: {</p>
-<p class="p1"><span class="Apple-converted-space">    </span>image: "https://dngrgoods.com/wp-content/uploads/2023/02/NOCTURNAL-INGESTIONS.gif",</p>
-<p class="p1"><span class="Apple-converted-space">    </span>text: "Restaurant identity built for loud gigs and cheap pints."</p>
-<p class="p1"><span class="Apple-converted-space">  </span>},</p>
-<p class="p1"><span class="Apple-converted-space">  </span>ABOUT: {</p>
-<p class="p1"><span class="Apple-converted-space">    </span>image: "https://dngrgoods.com/wp-content/uploads/2023/07/DSC01289-1.png",</p>
-<p class="p1"><span class="Apple-converted-space">    </span>text: "Creative Director specialising in identity, typography and motion."</p>
-<p class="p1"><span class="Apple-converted-space">  </span>}</p>
-<p class="p1">};</p>
-<p class="p2"><br></p>
-<p class="p1">function openProject(name) {</p>
-<p class="p1"><span class="Apple-converted-space">  </span>const data = projects[name];</p>
-<p class="p1"><span class="Apple-converted-space">  </span>if (!data) return;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">  </span>const win = document.createElement("div");</p>
-<p class="p1"><span class="Apple-converted-space">  </span>win.className = "window";</p>
-<p class="p1"><span class="Apple-converted-space">  </span>win.style.top = "50%";</p>
-<p class="p1"><span class="Apple-converted-space">  </span>win.style.left = "50%";</p>
-<p class="p1"><span class="Apple-converted-space">  </span>win.style.width = "500px";</p>
-<p class="p1"><span class="Apple-converted-space">  </span>win.style.height = "350px";</p>
-<p class="p1"><span class="Apple-converted-space">  </span>win.style.transform = "translate(-50%, -50%)";</p>
-<p class="p1"><span class="Apple-converted-space">  </span>win.style.zIndex = ++highestZ;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">  </span>win.innerHTML = `</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="close"&gt;X&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;h2&gt;${name}&lt;/h2&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;img src="${data.image}" style="width:100%; border:2px solid #0011ff;"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;p style="font-size:13px;"&gt;${data.text}&lt;/p&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>`;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">  </span>win.querySelector(".close").onclick = () =&gt; win.remove();</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">  </span>document.body.appendChild(win);</p>
-<p class="p1"><span class="Apple-converted-space">  </span>makeDraggable(win);</p>
-<p class="p1">}</p>
-<p class="p2"><br></p>
-<p class="p1">document.querySelectorAll(".menu li").forEach(item =&gt; {</p>
-<p class="p1"><span class="Apple-converted-space">  </span>item.addEventListener("click", () =&gt; {</p>
-<p class="p1"><span class="Apple-converted-space">    </span>openProject(item.dataset.project);</p>
-<p class="p1"><span class="Apple-converted-space">  </span>});</p>
-<p class="p1">});</p>
-<p class="p2"><br></p>
-<p class="p1">/* ===========================</p>
-<p class="p1"><span class="Apple-converted-space">   </span>THREE PARTICLE FIELD</p>
-<p class="p1">=========================== */</p>
-<p class="p2"><br></p>
-<p class="p1">const scene = new THREE.Scene();</p>
-<p class="p1">const camera = new THREE.PerspectiveCamera(</p>
-<p class="p1"><span class="Apple-converted-space">  </span>75,</p>
-<p class="p1"><span class="Apple-converted-space">  </span>window.innerWidth / window.innerHeight,</p>
-<p class="p1"><span class="Apple-converted-space">  </span>0.1,</p>
-<p class="p1"><span class="Apple-converted-space">  </span>1000</p>
-<p class="p1">);</p>
-<p class="p2"><br></p>
-<p class="p1">const renderer = new THREE.WebGLRenderer({ alpha: true });</p>
-<p class="p1">renderer.setSize(window.innerWidth, window.innerHeight);</p>
-<p class="p1">document.getElementById("three-bg").appendChild(renderer.domElement);</p>
-<p class="p2"><br></p>
-<p class="p1">camera.position.z = 50;</p>
-<p class="p2"><br></p>
-<p class="p1">const characters = ["✷", "☯", "☼", "⚆"];</p>
-<p class="p1">const particles = [];</p>
-<p class="p1">const count = 120;</p>
-<p class="p2"><br></p>
-<p class="p1">function createTextTexture(text) {</p>
-<p class="p1"><span class="Apple-converted-space">  </span>const canvas = document.createElement("canvas");</p>
-<p class="p1"><span class="Apple-converted-space">  </span>const ctx = canvas.getContext("2d");</p>
-<p class="p1"><span class="Apple-converted-space">  </span>canvas.width = 64;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>canvas.height = 64;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>ctx.fillStyle = "white";</p>
-<p class="p1"><span class="Apple-converted-space">  </span>ctx.font = "bold 42px monospace";</p>
-<p class="p1"><span class="Apple-converted-space">  </span>ctx.textAlign = "center";</p>
-<p class="p1"><span class="Apple-converted-space">  </span>ctx.textBaseline = "middle";</p>
-<p class="p1"><span class="Apple-converted-space">  </span>ctx.fillText(text, 32, 32);</p>
-<p class="p1"><span class="Apple-converted-space">  </span>return new THREE.CanvasTexture(canvas);</p>
-<p class="p1">}</p>
-<p class="p2"><br></p>
-<p class="p1">for (let i = 0; i &lt; count; i++) {</p>
-<p class="p1"><span class="Apple-converted-space">  </span>const texture = createTextTexture(</p>
-<p class="p1"><span class="Apple-converted-space">    </span>characters[Math.floor(Math.random() * characters.length)]</p>
-<p class="p1"><span class="Apple-converted-space">  </span>);</p>
-<p class="p1"><span class="Apple-converted-space">  </span>const material = new THREE.SpriteMaterial({ map: texture });</p>
-<p class="p1"><span class="Apple-converted-space">  </span>const sprite = new THREE.Sprite(material);</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">  </span>sprite.position.set(</p>
-<p class="p1"><span class="Apple-converted-space">    </span>(Math.random() - 0.5) * 120,</p>
-<p class="p1"><span class="Apple-converted-space">    </span>(Math.random() - 0.5) * 120,</p>
-<p class="p1"><span class="Apple-converted-space">    </span>(Math.random() - 0.5) * 120</p>
-<p class="p1"><span class="Apple-converted-space">  </span>);</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">  </span>sprite.userData.velocity = new THREE.Vector3(</p>
-<p class="p1"><span class="Apple-converted-space">    </span>Math.random() * 0.1 - 0.05,</p>
-<p class="p1"><span class="Apple-converted-space">    </span>Math.random() * 0.1 - 0.05,</p>
-<p class="p1"><span class="Apple-converted-space">    </span>Math.random() * 0.1 - 0.05</p>
-<p class="p1"><span class="Apple-converted-space">  </span>);</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">  </span>scene.add(sprite);</p>
-<p class="p1"><span class="Apple-converted-space">  </span>particles.push(sprite);</p>
-<p class="p1">}</p>
-<p class="p2"><br></p>
-<p class="p1">function animate() {</p>
-<p class="p1"><span class="Apple-converted-space">  </span>requestAnimationFrame(animate);</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">  </span>particles.forEach(p =&gt; {</p>
-<p class="p1"><span class="Apple-converted-space">    </span>p.position.add(p.userData.velocity);</p>
-<p class="p1"><span class="Apple-converted-space">    </span>if (p.position.length() &gt; 150) {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>p.position.set(</p>
-<p class="p1"><span class="Apple-converted-space">        </span>(Math.random() - 0.5) * 100,</p>
-<p class="p1"><span class="Apple-converted-space">        </span>(Math.random() - 0.5) * 100,</p>
-<p class="p1"><span class="Apple-converted-space">        </span>(Math.random() - 0.5) * 100</p>
-<p class="p1"><span class="Apple-converted-space">      </span>);</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p1"><span class="Apple-converted-space">  </span>});</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">  </span>renderer.render(scene, camera);</p>
-<p class="p1">}</p>
-<p class="p2"><br></p>
-<p class="p1">animate();</p>
-<p class="p2"><br></p>
-<p class="p1">window.addEventListener("resize", () =&gt; {</p>
-<p class="p1"><span class="Apple-converted-space">  </span>renderer.setSize(window.innerWidth, window.innerHeight);</p>
-<p class="p1"><span class="Apple-converted-space">  </span>camera.aspect = window.innerWidth / window.innerHeight;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>camera.updateProjectionMatrix();</p>
-<p class="p1">});</p>
-<p class="p2"><br></p>
-<p class="p1">&lt;/script&gt;</p>
-<p class="p1">&lt;/body&gt;</p>
-<p class="p1">&lt;/html&gt;</p>
+
+<div id="three-bg"></div>
+
+<div class="window menu" id="menu">
+  <h3>PROJECTS</h3>
+  <ul>
+    <li data-project="SOLARIS">I — SOLARIS</li>
+    <li data-project="NOCTURNAL">II — NOCTURNAL INGESTIONS</li>
+    <li data-project="ABOUT">III — ABOUT DNGR</li>
+  </ul>
+  <p style="font-size:11px;">
+  DRAG WINDOWS.<br>
+  OPEN MULTIPLE.<br>
+  DISTURB THE PARTICLES.
+  </p>
+</div>
+
+<div class="footer">
+DNGR GOODS<br>
+DANIAL GRAHAM<br>
+danial@dngrgoods.com
+</div>
+
+<script>
+
+/* ===========================
+   DRAG LOGIC
+=========================== */
+
+let highestZ = 20;
+
+function makeDraggable(el) {
+  let offsetX = 0;
+  let offsetY = 0;
+  let isDragging = false;
+
+  el.addEventListener("mousedown", (e) => {
+    isDragging = true;
+    highestZ++;
+    el.style.zIndex = highestZ;
+    offsetX = e.clientX - el.offsetLeft;
+    offsetY = e.clientY - el.offsetTop;
+  });
+
+  document.addEventListener("mousemove", (e) => {
+    if (!isDragging) return;
+    el.style.left = e.clientX - offsetX + "px";
+    el.style.top = e.clientY - offsetY + "px";
+    el.style.transform = "none";
+  });
+
+  document.addEventListener("mouseup", () => {
+    isDragging = false;
+  });
+}
+
+makeDraggable(document.getElementById("menu"));
+
+/* ===========================
+   PROJECT DATA
+=========================== */
+
+const projects = {
+  SOLARIS: {
+    image: "https://dngrgoods.com/wp-content/uploads/2023/02/SOLARIS-BRAND-GUIDE.gif",
+    text: "Minimal solar housing identity exploration."
+  },
+  NOCTURNAL: {
+    image: "https://dngrgoods.com/wp-content/uploads/2023/02/NOCTURNAL-INGESTIONS.gif",
+    text: "Restaurant identity built for loud gigs and cheap pints."
+  },
+  ABOUT: {
+    image: "https://dngrgoods.com/wp-content/uploads/2023/07/DSC01289-1.png",
+    text: "Creative Director specialising in identity, typography and motion."
+  }
+};
+
+function openProject(name) {
+  const data = projects[name];
+  if (!data) return;
+
+  const win = document.createElement("div");
+  win.className = "window";
+  win.style.top = "50%";
+  win.style.left = "50%";
+  win.style.width = "500px";
+  win.style.height = "350px";
+  win.style.transform = "translate(-50%, -50%)";
+  win.style.zIndex = ++highestZ;
+
+  win.innerHTML = `
+    <div class="close">X</div>
+    <h2>${name}</h2>
+    <img src="${data.image}" style="width:100%; border:2px solid #0011ff;">
+    <p style="font-size:13px;">${data.text}</p>
+  `;
+
+  win.querySelector(".close").onclick = () => win.remove();
+
+  document.body.appendChild(win);
+  makeDraggable(win);
+}
+
+document.querySelectorAll(".menu li").forEach(item => {
+  item.addEventListener("click", () => {
+    openProject(item.dataset.project);
+  });
+});
+
+/* ===========================
+   THREE PARTICLE FIELD
+=========================== */
+
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(
+  75,
+  window.innerWidth / window.innerHeight,
+  0.1,
+  1000
+);
+
+const renderer = new THREE.WebGLRenderer({ alpha: true });
+renderer.setSize(window.innerWidth, window.innerHeight);
+document.getElementById("three-bg").appendChild(renderer.domElement);
+
+camera.position.z = 50;
+
+const characters = ["✷", "☯", "☼", "⚆"];
+const particles = [];
+const count = 120;
+
+function createTextTexture(text) {
+  const canvas = document.createElement("canvas");
+  const ctx = canvas.getContext("2d");
+  canvas.width = 64;
+  canvas.height = 64;
+  ctx.fillStyle = "white";
+  ctx.font = "bold 42px monospace";
+  ctx.textAlign = "center";
+  ctx.textBaseline = "middle";
+  ctx.fillText(text, 32, 32);
+  return new THREE.CanvasTexture(canvas);
+}
+
+for (let i = 0; i < count; i++) {
+  const texture = createTextTexture(
+    characters[Math.floor(Math.random() * characters.length)]
+  );
+  const material = new THREE.SpriteMaterial({ map: texture });
+  const sprite = new THREE.Sprite(material);
+
+  sprite.position.set(
+    (Math.random() - 0.5) * 120,
+    (Math.random() - 0.5) * 120,
+    (Math.random() - 0.5) * 120
+  );
+
+  sprite.userData.velocity = new THREE.Vector3(
+    Math.random() * 0.1 - 0.05,
+    Math.random() * 0.1 - 0.05,
+    Math.random() * 0.1 - 0.05
+  );
+
+  scene.add(sprite);
+  particles.push(sprite);
+}
+
+function animate() {
+  requestAnimationFrame(animate);
+
+  particles.forEach(p => {
+    p.position.add(p.userData.velocity);
+    if (p.position.length() > 150) {
+      p.position.set(
+        (Math.random() - 0.5) * 100,
+        (Math.random() - 0.5) * 100,
+        (Math.random() - 0.5) * 100
+      );
+    }
+  });
+
+  renderer.render(scene, camera);
+}
+
+animate();
+
+window.addEventListener("resize", () => {
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.updateProjectionMatrix();
+});
+
+</script>
 </body>
 </html>
