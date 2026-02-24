@@ -4,29 +4,27 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>DNGR GOODS</title>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script><script src="https://unpkg.com/@dotlottie/player-component@2.7.12/dist/dotlottie-player.mjs" type="module"></script>
-<dotlottie-player src="https://lottie.host/d78de815-63f5-4083-8b23-d3833bcfd65f/1aTwDaznYJ.lottie" background="transparent" speed=".5" repeat='' style="width: 100%; height: 50%" loop autoplay hover></dotlottie-player>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-  <style>
+  <script src="https://unpkg.com/@dotlottie/player-component@2.7.12/dist/dotlottie-player.mjs" type="module"></script>
   <style>
     @font-face {
       font-family: "Neue Montreal Mono";
       src: url("path-to-neue-montreal-mono.woff2") format("woff2");
     }
 
-    body {
+    html, body {
       margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    body {
       overflow: hidden;
-      background: repeating-linear-gradient(
-      180deg,               /* angle */
-      #000000,             /* colour 1 */
-      #0000FF 20px,        /* stop */
-      #000000 60px,        /* colour 2 */
-      #0000FF 50px         /* next stop */
-      
-    );
+      background: black;
+      ) !important;
       font-family: "Neue Montreal Mono", monospace;
-      color: white;
+      color: black;
     }
 
     .branding {
@@ -34,6 +32,8 @@
       top: 20px;
       left: 20px;
       font-size: 24px;
+      z-index: 100;
+      color: white;
     }
 
     .footer {
@@ -41,93 +41,105 @@
       bottom: 20px;
       right: 20px;
       text-align: right;
-      font-size: 12px;
-      line-height: 1.4;
+      font-size: 11px;
+      line-height: 1.6;
+      z-index: 100;
+      color: white;
     }
 
     .content {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      width: 100%;
+      height: 20vh;
       z-index: 10;
-      max-width: 400px;
-      min-width: 300px;
-      height: 550px;
+      border-top: 1px solid #ddd;
+      padding: 20px;
+      background: #f8f8f8;
       overflow-y: auto;
       overflow-x: hidden;
-      border: 2px solid white;
-      padding: 10px;
-      background: black;
-      cursor: grab;
-    }
-    
-    .lottie-wrapper {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 5;
-  width: 100%;
-  max-width: 600px;
-  height: auto;
-  pointer-events: none; /* So it doesn’t interfere with interactions */
-}
-
-.lottie-wrapper dotlottie-player {
-  width: 100%;
-  height: auto;
-}
-
-    .content:active {
-      cursor: grabbing;
+      display: flex;
+      flex-direction: column;
+      box-sizing: border-box;
     }
 
-    .content h1 {
-      font-size: 36px;
-      margin-bottom: 20px;
-    }
-    .content il {font-weight: bold;
-      font-size: 12px;
-      margin-bottom: 20px;
-      color: blue;
+    .content h4 {
+      font-weight: 600;
+      font-size: 10px;
+      margin: 0 0 12px 0;
+      color: #666;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
     }
 
     .content ul {
       list-style: none;
       padding: 0;
       margin: 0;
-      font-size: 12px;
-      line-height: .5;
+      font-size: 10px;
+      line-height: 1.5;
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 0;
+      flex: 1;
+      overflow-y: auto;
     }
 
     .content ul li {
-      margin-bottom: 10px;
       cursor: pointer;
+      margin: 0;
+      color: #333;
+      font-weight: 400;
+      padding-right: 10px;
+      border-right: 1px solid #ddd;
+    }
+
+    .content ul li:last-child {
+      border-right: none;
     }
 
     .content ul li:hover {
-      text-decoration: underline;
+      color: #0066cc;
     }
 
     .content ul li span {
-      font-weight: bold;
-      font-size: 12px;
-      margin-right: 10px;
+      font-weight: 600;
+      font-size: 10px;
+      margin-right: 5px;
+      color: #999;
     }
 
-    .content::-webkit-scrollbar, .preview::-webkit-scrollbar {
-      width: 12px;
+    .lottie-wrapper {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      z-index: 6;
+      width: 150px;
+      height: 150px;
+      pointer-events: none;
     }
 
-    .content::-webkit-scrollbar-thumb, .preview::-webkit-scrollbar-thumb {
-      background: white;
-      border: 2px #272100;
+    .lottie-wrapper dotlottie-player {
+      width: 100%;
+      height: 100%;
+      background: transparent !important;
     }
 
-    .content::-webkit-scrollbar-track, .preview::-webkit-scrollbar-track {
-      background: #272100;
-      border: 2px solid white;
+    .content::-webkit-scrollbar,
+    .preview::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .content::-webkit-scrollbar-thumb,
+    .preview::-webkit-scrollbar-thumb {
+      background: #999;
+    }
+
+    .content::-webkit-scrollbar-track,
+    .preview::-webkit-scrollbar-track {
+      background: transparent;
     }
 
     .preview {
@@ -135,55 +147,87 @@
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      z-index: 10;
-      max-width: 800px;
+      z-index: 20;
+      width: 600px;
       min-width: 200px;
-      height: 400px;
+      height: auto;
       min-height: 300px;
-      border: 2px solid white;
-      padding: 10px;
-      background: black
-    ;
-    );
+      border: none;
+      padding: 30px;
+      background: white;
       overflow: auto;
       resize: both;
       cursor: default;
-    }
-    
-
-    .preview h2 {
-      font-size: 28px;
-      margin-bottom: 20px;
-    }
-
-    .preview img {
-      max-width: 100%;
-      margin-bottom: 20px;
-      border: 2px solid blue;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.2);
     }
 
     .close-button {
       position: absolute;
-      top: 10px;
-      right: 10px;
+      top: 20px;
+      right: 20px;
       padding: 5px 10px;
-      background: #ffffff;
-      color: blue;
-      border: none;
+      background: transparent;
+      color: #999;
+      border: 1px solid #ddd;
       cursor: pointer;
-      font-size: 16px;
+      font-size: 14px;
       font-family: "Neue Montreal Mono", monospace;
+      transition: all 0.2s;
+      z-index: 30;
     }
 
     .close-button:hover {
-      color: transparent;
-      background: transparent;
+      color: #000;
+      border-color: #000;
     }
 
     .close-button::before {
-      content: "X";
+      content: "×";
       font-weight: bold;
+      font-size: 20px;
+    }
+
+    .preview-image-wrapper {
+      width: 100%;
+      margin-bottom: 20px;
+    }
+
+    .preview-image-wrapper img {
+      width: 100%;
+      height: auto;
+      display: block;
+      border: none;
+    }
+
+    .preview-title {
       font-size: 16px;
+      font-weight: 600;
+      margin: 0 0 12px 0;
+      color: #000;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .preview-blurb {
+      font-size: 11px;
+      line-height: 1.6;
+      color: #333;
+      text-align: justify;
+      margin: 0;
+    }
+
+    .preview-blurb img {
+      float: left;
+      margin: 0 12px 8px 0;
+      border: 1px solid #eee;
+      height: 45px;
+      width: auto;
+      object-fit: cover;
+    }
+
+    .preview-blurb img:nth-of-type(2) {
+      float: right;
+      margin: 0 0 8px 12px;
     }
 
     .three-container {
@@ -194,45 +238,36 @@
       height: 100%;
       pointer-events: none;
       z-index: 1;
+      display: none;
     }
   </style>
-  
 </head>
 <body>
-  <div class="branding"></div>
+  <div class="branding">DNGR GOODS</div>
+
+  <div class="lottie-wrapper">
+    <dotlottie-player src="https://lottie.host/d78de815-63f5-4083-8b23-d3833bcfd65f/1aTwDaznYJ.lottie" background="transparent" speed="0.5" loop autoplay hover></dotlottie-player>
+  </div>
 
   <div class="content">
-      <h4>PROJECTS MENU</h4>
-    
+    <h4>Projects</h4>
+
     <ul>
-        
-      <li data-project="SOLARIS"><span>I</span> SOLARIS — <span>2023</span></li>
-      <li data-project="GO MAD"><span>II</span> GO MAD — <span>2023</span></li>
-      <li data-project="LSW"><span>III</span> LSW — <span>2023</span></li>
-      <li data-project="VANCE LIVING"><span>IV</span> VANCE LIVING — <span>2023</span></li>
-      <li data-project="ABOUT DNGR"><span>V</span> ABOUT DNGR — <span>2023</span></li>
-      <li data-project="NOCTURNAL INGESTIONS"><span>VI</span> NOCTURNAL INGESTIONS — <span>2023</span></li>
-      
+      <li data-project="SOLARIS"><span>01</span>SOLARIS</li>
+      <li data-project="GO MAD"><span>02</span>GO MAD</li>
+      <li data-project="LSW"><span>03</span>LSW</li>
+      <li data-project="VANCE LIVING"><span>04</span>VANCE LIVING</li>
+      <li data-project="ABOUT DNGR"><span>05</span>ABOUT DNGR</li>
+      <li data-project="NOCTURNAL INGESTIONS"><span>06</span>NOCTURNAL</li>
+      <li data-project="THAIMESE"><span>07</span>THAIMESE</li>
+      <li data-project="KINETIC MOTION"><span>08</span>KINETIC MOTION</li>
     </ul>
-    
-    <h5><br>CLICK HOLD & DRAG <br><br><img src="https://dngrgoods.com/temp/wp-content/uploads/2025/06/dog-drag.gif" style="width:50%;height:50%; display: inline-block;"><br><br>OPEN PROJECTS, AS MANY AS YOU  <br>WANT AND DRAG WHERE YOU WANT</h5> <il>* TRY BOTHERING THE BACKGROUND PARTICLES <br>BY POINTING THE CURSOR AT THEM</il>
   </div>
-  <div class="lottie-wrapper">
-  <dotlottie-player
-    src="https://lottie.host/d78de815-63f5-4083-8b23-d3833bcfd65f/1aTwDaznYJ.lottie"
-    background="transparent"
-    speed="0.5"
-    loop
-    autoplay
-    hover>
-  </dotlottie-player>
-</div>
 
   <div class="footer">
-      
     DNGR GOODS<br>
     DANIAL GRAHAM<br>
-    GOODS AND VISUAL SERVICES<br>
+    GOODS & VISUAL SERVICES<br>
     DANIAL@DNGRGOODS.COM<br>
     0400 165 501
   </div>
@@ -284,66 +319,67 @@
 
     let zIndex = 10;
 
-    const projectsContainer = document.querySelector('.content');
-    makeDraggable(projectsContainer);
-
     const projectData = {
       'SOLARIS': {
-        image: 'https://dngrgoods.com/wp-content/uploads/2023/02/SOLARIS-BRAND-GUIDE.gif',
-        description: 'Solaris is an exploration into minimal solar housing for urban spaces.'
+        image: 'https://github.com/danial-dngr/dngrgoods/blob/main/Holiday%20Sauce%20-%20Holding%20Sea%20horse%20.png?raw=true',
+        blurb: '<img src="https://github.com/danial-dngr/dngrgoods/blob/main/Holiday%20Sauce%20-%20Holding%20Sea%20horse%20.png?raw=true" alt="Solaris detail 1">Solaris is an exploration into minimal solar housing for urban spaces. The project examines how architectural principles can be applied to sustainable living environments. Lorem ipsum dolor sit amet, consectetur adipiscing elit. <img src="https://github.com/danial-dngr/dngrgoods/blob/main/Holiday%20Sauce%20-%20Instax%20Photo.png?raw=true"> Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat duis aute irure dolor in reprehenderit voluptate velit esse cillum.<img src="https://github.com/danial-dngr/dngrgoods/blob/main/Holiday%20Sauce%20-%20Holding%20Sea%20horse%20.png?raw=true" alt="Solaris detail 1">Solaris is an exploration into minimal solar housing for urban spaces. The project examines how architectural principles can be applied to sustainable living environments. Lorem ipsum dolor sit amet, consectetur adipiscing elit. <img src="https://github.com/danial-dngr/dngrgoods/blob/main/Holiday%20Sauce%20-%20Instax%20Photo.png?raw=true"> Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat duis aute irure dolor in reprehenderit voluptate velit esse cillum.<img src="https://github.com/danial-dngr/dngrgoods/blob/main/Holiday%20Sauce%20-%20Holding%20Sea%20horse%20.png?raw=true" alt="Solaris detail 1">Solaris is an exploration into minimal solar housing for urban spaces. The project examines how architectural principles can be applied to sustainable living environments. Lorem ipsum dolor sit amet, consectetur adipiscing elit. <img src="https://github.com/danial-dngr/dngrgoods/blob/main/Holiday%20Sauce%20-%20Instax%20Photo.png?raw=true"> Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat duis aute irure dolor in reprehenderit voluptate velit esse cillum.'
+        
       },
       'GO MAD': {
         image: 'path-to-go-mad-image.jpg',
-        description: 'Go Mad is an energetic project aimed at capturing human creativity.'
+        blurb: '<img src="https://via.placeholder.com/100x45/FF0000/FFFFFF?text=Detail+1" alt="Go Mad detail 1"><img src="https://via.placeholder.com/100x45/FFFFFF/FF0000?text=Detail+2" alt="Go Mad detail 2">Go Mad is an energetic project aimed at capturing human creativity and expression. This initiative celebrates the intersection of art, design, and human emotion. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum sed ut perspiciatis unde omnis.'
       },
       'LSW': {
         image: 'path-to-lsw-image.jpg',
-        description: 'LSW encapsulates the essence of living simply with water themes.'
+        blurb: '<img src="https://via.placeholder.com/100x45/00AA00/FFFFFF?text=Detail+1" alt="LSW detail 1"><img src="https://via.placeholder.com/100x45/FFFFFF/00AA00?text=Detail+2" alt="LSW detail 2">LSW encapsulates the essence of living simply with water themes at its core. The project explores the relationship between minimalism and natural resources. Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo nemo enim.'
       },
       'VANCE LIVING': {
         image: 'path-to-vance-living-image.jpg',
-        description: 'Vance Living is a bold project bringing modular architecture into daily life.'
+        blurb: '<img src="https://via.placeholder.com/100x45/AA00AA/FFFFFF?text=Detail+1" alt="Vance detail 1"><img src="https://via.placeholder.com/100x45/FFFFFF/AA00AA?text=Detail+2" alt="Vance detail 2">Vance Living is a bold project bringing modular architecture into daily life. This innovative approach reimagines how we design and inhabit spaces. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt neque porro quisquam est qui dolorem ipsum quia dolor sit amet consectetur.'
       },
       'ABOUT DNGR': {
         image: 'https://dngrgoods.com/wp-content/uploads/2023/07/DSC01289-1.png',
-        description: '* CREATIVE DIRECTOR DANIAL GRAHAM <br><br> I SPECIALISE IN BRANDING IDENTITY, ART DIRECTION, TYPOGRAPHY, LOGO DESIGN, STRATEGIC DESIGN, MOTION GRAPHICS, PHOTOGRAPHY AND AM AN EXPERIENCED PROJECT MANAGER IN COMMERCIAL SIGNAGE. I AM A CREATIVE THINKER WHO IS EQUALLY COMFORTABLE WITH STRATEGY, AND I BRING A SOLUTIONS-ORIENTED APPROACH TO ALL MY WORK.'
+        blurb: '<img src="https://via.placeholder.com/100x45/FFaa00/000000?text=Detail+1" alt="DNGR detail 1"><img src="https://via.placeholder.com/100x45/000000/FFaa00?text=Detail+2" alt="DNGR detail 2">Creative Director Danial Graham specializes in branding identity, art direction, typography, logo design, and strategic design. With experience in motion graphics, photography, and commercial signage project management, Danial brings a solutions-oriented approach to all creative endeavors. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua ut enim ad minim veniam.'
       },
-      'NOCTURNAL INGESTIONS'
-      : {
-        image: 'https://dngrgoods.com/wp-content/uploads/2023/02/NOCTURNAL-INGESTIONS.gif',
-        description: 'Nocturnal Ingestions is the late night (night eaters) restaurant identity designed with The Bendigo Hotel in Collingwood, a venue known for its loud gigs and cheap pints.<br><br> Signage was built to tie in with the venue, bringing its rough interior and punk atmosphere through.<br><br><br><img src="https://dngrgoods.com/wp-content/uploads/2023/02/NOCTURNAL-INGESTIONS.gif" alt="Description of image" style="width:100%;height:100%; display: inline-block;"> <br><br><br>The menu identity took shape alongside this, gritty, loud. Cheap burger nights and snack drops were promoted. Illustration became a larger part of the identity. Hand drawn, keeping it messy. <br><br>Those drawings became merch, menus, stickers, socials, pretty much anywhere we could slap them. It gave the brand a personality that felt like it could live in the crowd or behind the bar.Nocturnal Ingestions was never meant to feel clean or overly designed. It’s there to feed the chaos and leave a bit of grease behind. Just like the venue.'
+      'NOCTURNAL INGESTIONS': {
+        image: 'https://github.com/danial-dngr/dngrgoods/blob/main/Screen%20Shot%202022-11-03%20at%205.31.19%20pm.png?raw=true',
+        blurb: '<img src="https://via.placeholder.com/100x45/333333/CCCCCC?text=Detail+1" alt="Nocturnal detail 1"><img src="https://via.placeholder.com/100x45/CCCCCC/333333?text=Detail+2" alt="Nocturnal detail 2">Nocturnal Ingestions is the late night restaurant identity designed with The Bendigo Hotel in Collingwood, a venue known for its loud gigs and cheap pints. The signage design ties directly to the venue\'s rough interior and punk atmosphere. Ut laborum et dolore magna aliqua ut enim ad minim veniam quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat duis aute irure dolor in reprehenderit voluptate velit esse cillum dolore.'
+      },
+      'THAIMESE': {image: 'https://github.com/danial-dngr/dngrgoods/blob/main/MMALE%20MODEL%20WEARING%20SHIRT%20FUll.jpg?raw=true',
+        blurb: '<img src="https://via.placeholder.com/100x45/333333/CCCCCC?text=Detail+1" alt="Nocturnal detail 1"><img src="https://via.placeholder.com/100x45/CCCCCC/333333?text=Detail+2" alt="Nocturnal detail 2">Nocturnal Ingestions is the late night restaurant identity designed with The Bendigo Hotel in Collingwood, a venue known for its loud gigs and cheap pints. The signage design ties directly to the venue\'s rough interior and punk atmosphere. Ut laborum et dolore magna aliqua ut enim ad minim veniam quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat duis aute irure dolor in reprehenderit voluptate velit esse cillum dolore.'
+        
+      },
+      'KINETIC MOTION': {image: 'https://github.com/danial-dngr/dngrgoods/blob/.../FINDING%20TIME%203.mp4',
+        blurb: '<img src="https://via.placeholder.com/100x45/333333/CCCCCC?text=Detail+1" alt="Nocturnal detail 1"><img src="https://via.placeholder.com/100x45/CCCCCC/333333?text=Detail+2" alt="Nocturnal detail 2">Nocturnal Ingestions is the late night restaurant identity designed with The Bendigo Hotel in Collingwood, a venue known for its loud gigs and cheap pints. The signage design ties directly to the venue\'s rough interior and punk atmosphere. Ut laborum et dolore magna aliqua ut enim ad minim veniam quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat duis aute irure dolor in reprehenderit voluptate velit esse cillum dolore.'
+        
       }
     };
 
     const createPreviewContainer = (project) => {
-      const data = projectData[project] || { image: '', description: 'Details coming soon.' };
+      const data = projectData[project] || { image: '', blurb: 'Details coming soon.' };
 
-      // If preview already exists, reset its position and size
       if (openPreviews[project]) {
         const previewContainer = openPreviews[project];
         previewContainer.style.top = '50%';
         previewContainer.style.left = '50%';
-        previewContainer.style.width = '600px';
-        previewContainer.style.height = '400px';
         previewContainer.style.transform = 'translate(-50%, -50%)';
         return;
       }
 
-      // Create a new preview container
       const previewContainer = document.createElement('div');
       previewContainer.className = 'preview';
       previewContainer.style.top = '50%';
       previewContainer.style.left = '50%';
-      previewContainer.style.width = '600px';
-      previewContainer.style.height = '400px';
       previewContainer.style.transform = 'translate(-50%, -50%)';
       previewContainer.style.zIndex = `${++zIndex}`;
 
       previewContainer.innerHTML = `
         <button class="close-button"></button>
-        <h2>${project}</h2>
-        <img src="${data.image}" alt="${project} Image">
-        <p>${data.description}</p>
+        <div class="preview-image-wrapper">
+          <img src="${data.image}" alt="${project} Image">
+        </div>
+        <div class="preview-title">${project}</div>
+        <p class="preview-blurb">${data.blurb}</p>
       `;
 
       previewContainer.querySelector('.close-button').addEventListener('click', () => {
@@ -363,105 +399,6 @@
         createPreviewContainer(project);
       });
     });
-
-    const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-    const renderer = new THREE.WebGLRenderer({ alpha: true });
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    document.querySelector('.three-container').appendChild(renderer.domElement);
-
-    const characters = ["✷", "☯", "☼", "⚆", "⚠" ];
-    const particles = [];
-    const material = new THREE.SpriteMaterial({ color: 0xffffff });
-    const particleCount = 200;
-
-    const createTextTexture = (text) => {
-      const canvas = document.createElement("canvas");
-      const context = canvas.getContext("2d");
-      canvas.width = 64;
-      canvas.height = 64;
-
-      context.fillStyle = "#ffffff";
-      context.font = "bold 48px 'Neue Montreal Mono', monospace";
-      context.textAlign = "center";
-      context.textBaseline = "middle";
-      context.clearRect(0, 0, canvas.width, canvas.height);
-      context.fillText(text, canvas.width / 2, canvas.height / 2);
-
-      return new THREE.CanvasTexture(canvas);
-    };
-
-    for (let i = 0; i < particleCount; i++) {
-      const char = characters[Math.floor(Math.random() * characters.length)];
-      const texture = createTextTexture(char);
-
-      const spriteMaterial = new THREE.SpriteMaterial({ map: texture });
-      const sprite = new THREE.Sprite(spriteMaterial);
-
-      sprite.scale.set(1, 1, 1);
-      sprite.position.set(
-        (Math.random() - 0.5) * 100,
-        (Math.random() - 0.5) * 100,
-        (Math.random() - 0.5) * 100
-      );
-
-      sprite.userData.velocity = new THREE.Vector3(
-        Math.random() * 0.2 - 0.1,
-        Math.random() * 0.2 - 0.1,
-        Math.random() * 0.2 - 0.1
-      );
-      scene.add(sprite);
-      particles.push(sprite);
-    }
-
-    camera.position.z = 50;
-
-    const raycaster = new THREE.Raycaster();
-    const mouse = new THREE.Vector2();
-
-    window.addEventListener('mousemove', (event) => {
-      mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
-      mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
-    });
-
-    function animate() {
-      requestAnimationFrame(animate);
-
-      raycaster.setFromCamera(mouse, camera);
-
-      particles.forEach((particle) => {
-        const intersects = raycaster.intersectObject(particle);
-
-        if (intersects.length > 0) {
-          const avoidance = new THREE.Vector3()
-            .subVectors(particle.position, raycaster.ray.origin)
-            .normalize()
-            .multiplyScalar(2);
-          particle.position.add(avoidance);
-        } else {
-          particle.position.add(particle.userData.velocity);
-
-          if (particle.position.length() > 200) {
-            particle.position.set(
-              (Math.random() - 0.5) * 100,
-              (Math.random() - 0.5) * 100,
-              (Math.random() - 0.5) * 100
-            );
-          }
-        }
-      });
-
-      renderer.render(scene, camera);
-    }
-
-    animate();
-
-    window.addEventListener('resize', () => {
-      renderer.setSize(window.innerWidth, window.innerHeight);
-      camera.aspect = window.innerWidth / window.innerHeight;
-      camera.updateProjectionMatrix();
-    });
   </script>
-  
 </body>
 </html>
