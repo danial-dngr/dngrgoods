@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>DNGR GOODS</title>
 
-  <!-- Libs -->
+  <!-- Libraries -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
   <script type="module" src="https://unpkg.com/@dotlottie/player-component@2.7.12/dist/dotlottie-player.mjs"></script>
 
@@ -18,19 +18,21 @@
       --border-color: #ddd;
       --shadow-color: rgba(0,0,0,0.2);
       --hover-color: #0066cc;
-      --scrollbar-thumb: #888; /* DOS style */
-      --scrollbar-track: #111; /* DOS style */
 
-      /* Swiss grid vars */
+      /* DOS/brutalist scrollbar colors */
+      --scrollbar-thumb: #888;
+      --scrollbar-track: #111;
+
+      /* Swiss grid */
       --swiss-columns: 12;
       --swiss-gap: 15px;
-      --swiss-row: 12px;
+      --swiss-row: 12px; /* baseline row height */
 
-      /* Menu columns (sync with info bar) */
+      /* Bottom menu columns (sync with info bar) */
       --menu-cols: 5;
 
-      /* Subtle overlap (about half) */
-      --overlap-offset: -6px;
+      /* Overlap in grid mode (~15px) */
+      --overlap-offset: -15px;
     }
 
     @media (max-width: 800px) {
@@ -45,7 +47,8 @@
       --border-color: #444;
       --shadow-color: rgba(255,255,255,0.1);
       --hover-color: #66b3ff;
-      --scrollbar-thumb: #c0c0c0; /* lighter thumb on dark */
+
+      --scrollbar-thumb: #c0c0c0;
       --scrollbar-track: #111;
     }
 
@@ -56,14 +59,12 @@
     }
 
     html, body {
-      margin: 0;
-      padding: 0;
-      width: 100%;
-      height: 100%;
+      margin: 0; padding: 0;
+      width: 100%; height: 100%;
     }
 
     body {
-      overflow-x: hidden; /* No side scrolling */
+      overflow-x: hidden; /* prevent side scroll */
       overflow-y: hidden;
       background: var(--bg-primary);
       font-family: "Neue Montreal Mono", monospace;
@@ -71,25 +72,22 @@
       transition: background 0.3s ease, color 0.3s ease;
     }
 
-    /* === Brutalist DOS scroll aesthetic === */
-    /* Firefox */
+    /* === DOS / Brutalist scrollbars === */
     * {
-      scrollbar-width: thin;
+      scrollbar-width: thin; /* Firefox */
       scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
     }
-    /* WebKit */
     .content ul::-webkit-scrollbar,
     .grid-container::-webkit-scrollbar,
     .preview::-webkit-scrollbar {
-      width: 10px;
-      height: 10px;
+      width: 10px; height: 10px;
     }
     .content ul::-webkit-scrollbar-thumb,
     .grid-container::-webkit-scrollbar-thumb,
     .preview::-webkit-scrollbar-thumb {
       background: var(--scrollbar-thumb);
       border: 2px solid var(--scrollbar-track);
-      border-radius: 0; /* square */
+      border-radius: 0; /* square corners */
     }
     .content ul::-webkit-scrollbar-track,
     .grid-container::-webkit-scrollbar-track,
@@ -98,38 +96,27 @@
     }
 
     .branding {
-      position: fixed;
-      top: 20px;
-      left: 20px;
+      position: fixed; top: 20px; left: 20px;
       font-size: clamp(16px, 2vw, 28px);
       z-index: 100;
       color: var(--text-primary);
       text-transform: uppercase;
-      display: flex;
-      align-items: center;
-      gap: 12px;
+      display: flex; align-items: center; gap: 12px;
     }
-
     .branding-text { line-height: 1; }
 
-    .control-buttons {
-      display: flex;
-      gap: 8px;
-      margin-left: 20px;
-    }
-
+    .control-buttons { display: flex; gap: 8px; margin-left: 20px; }
     .control-button {
       background: transparent;
       border: 1px solid var(--border-color);
       color: var(--text-primary);
       cursor: pointer;
       padding: 8px 12px;
-      font-family: "Neue Montreal Mono", monospace;
+      font-family: inherit;
       font-size: 16px;
       transition: all 0.2s ease;
       border-radius: 4px;
     }
-
     .control-button:hover {
       border-color: var(--text-primary);
       background: var(--text-primary);
@@ -138,74 +125,47 @@
 
     /* === Bottom Projects Menu (fixed & on top) === */
     .content {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      width: 100%;
-      height: 20vh;
-      z-index: 10000; /* Always on top */
+      position: fixed; bottom: 0; left: 0; right: 0;
+      width: 100%; height: 20vh;
+      z-index: 10000; /* stay above everything */
       border-top: 1px solid var(--border-color);
       padding: 10px 10px 8px 10px;
       background: var(--bg-secondary);
-      overflow: hidden; /* Inner elements manage their own scroll */
-      display: grid;    /* Title | List | Info bar */
-      grid-template-rows: auto 1fr auto;
+      overflow: hidden; /* inner elements manage scroll */
+      display: grid; grid-template-rows: auto 1fr auto; /* title | list | info bar */
       box-sizing: border-box;
       transition: background 0.3s ease, border-color 0.3s ease;
     }
-
     .content h4 {
-      font-weight: 400;
-      font-size: clamp(14px, 1.4vw, 18px);
-      margin: 0 0 6px 0;
-      color: var(--text-primary);
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      line-height: 1;
+      font-weight: 400; font-size: clamp(14px, 1.4vw, 18px);
+      margin: 0 0 6px 0; color: var(--text-primary);
+      text-transform: uppercase; letter-spacing: 0.5px; line-height: 1;
     }
-
     .content ul {
-      list-style: none;
-      padding: 0;
-      margin: 0;
+      list-style: none; padding: 0; margin: 0;
       font-size: clamp(14px, 1.4vw, 18px);
+      display: grid; grid-template-columns: repeat(var(--menu-cols), 1fr);
+      gap: 0; row-gap: clamp(0.5px, 0.3vw, 3px);
+      overflow-y: auto; overflow-x: hidden; /* vertical only */
       line-height: 1;
-      display: grid;
-      grid-template-columns: repeat(var(--menu-cols), 1fr);
-      gap: 0;
-      overflow-y: auto;   /* vertical scroll only */
-      overflow-x: hidden; /* no side scroll */
-      row-gap: clamp(0.5px, 0.3vw, 3px);
     }
-
     .content ul li {
-      cursor: pointer;
-      margin: 0;
-      color: var(--text-primary);
-      font-weight: 400;
-      padding-right: clamp(6px, 1vw, 12px);
-      border-right: 1px solid var(--border-color);
-      text-transform: uppercase;
-      line-height: 1;
+      cursor: pointer; margin: 0; color: var(--text-primary); font-weight: 400;
+      padding-right: clamp(6px, 1vw, 12px); border-right: 1px solid var(--border-color);
+      text-transform: uppercase; line-height: 1;
       padding-bottom: clamp(0.5px, 0.3vw, 2px);
-      transition: color 0.2s ease;
-      white-space: nowrap;
+      transition: color 0.2s ease; white-space: nowrap;
     }
     .content ul li:last-child { border-right: none; }
     .content ul li:hover { color: var(--hover-color); }
-
     .content ul li span {
-      font-weight: 600;
-      font-size: clamp(10px, 1vw, 11px);
-      margin-right: clamp(3px, 0.5vw, 6px);
-      color: var(--text-primary);
+      font-weight: 700; font-size: clamp(10px, 1vw, 11px);
+      margin-right: clamp(3px, 0.5vw, 6px); color: var(--text-primary);
     }
 
-    /* Info bar inside the menu */
+    /* Info bar moved into menu as single line */
     .info-bar {
-      display: grid;
-      grid-template-columns: repeat(var(--menu-cols), 1fr);
+      display: grid; grid-template-columns: repeat(var(--menu-cols), 1fr);
       column-gap: 0;
       font-size: clamp(10px, 1.1vw, 12px);
       color: var(--text-primary);
@@ -219,51 +179,36 @@
       padding-right: clamp(6px, 1vw, 12px);
       border-right: 1px solid var(--border-color);
       text-transform: uppercase;
-      overflow: hidden;
-      text-overflow: ellipsis;
+      overflow: hidden; text-overflow: ellipsis;
     }
     .info-cell:last-child { border-right: none; }
-    .info-cell a {
-      color: inherit;
-      text-decoration: none;
-    }
+    .info-cell a { color: inherit; text-decoration: none; }
     .info-cell a:hover { text-decoration: underline; }
 
-    /* Original footer hidden to avoid duplication */
+    /* Original footer is hidden to avoid duplication */
     .footer { display: none; }
 
     .lottie-wrapper {
-      position: fixed;
-      top: 20px;
-      left: 20px;
-      z-index: 6;
-      width: clamp(40px, 8vw, 80px);
-      height: clamp(40px, 8vw, 80px);
+      position: fixed; top: 20px; left: 20px;
+      z-index: 6; width: clamp(40px, 8vw, 80px); height: clamp(40px, 8vw, 80px);
       pointer-events: none;
     }
     .lottie-wrapper dotlottie-player {
-      width: 100%;
-      height: 100%;
-      background: transparent !important;
+      width: 100%; height: 100%; background: transparent !important;
     }
 
     /* === Grid Area === */
     .grid-container {
       position: fixed;
-      top: 80px;
-      left: 20px;
-      right: 20px;
-      bottom: calc(20vh + 10px); /* leave room for fixed menu */
+      top: 80px; left: 20px; right: 20px; bottom: calc(20vh + 10px);
       z-index: 15;
       display: none;
       grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
       grid-auto-rows: minmax(200px, auto);
       gap: var(--swiss-gap);
-      overflow-y: auto;   /* vertical scroll only */
-      overflow-x: hidden; /* no side scroll */
+      overflow-y: auto; overflow-x: hidden;
       padding: 10px;
     }
-
     .grid-container.active {
       display: grid;
       grid-template-columns: repeat(var(--swiss-columns), 1fr);
@@ -273,120 +218,70 @@
 
     .grid-container .preview {
       position: relative !important;
-      transform: translate(var(--overlap-offset), var(--overlap-offset)) !important;
-      top: auto !important;
-      left: auto !important;
-      width: 100% !important;
-      min-width: auto !important;
-      min-height: auto !important;
-      height: auto !important;
+      transform: translate(var(--overlap-offset), var(--overlap-offset)) !important; /* ~15px overlap */
+      top: auto !important; left: auto !important;
+      width: 100% !important; height: auto !important;
+      min-width: auto !important; min-height: auto !important;
       box-shadow: 0 2px 10px var(--shadow-color);
-      resize: none; /* no freeform resize in grid mode */
+      resize: none; /* disabled in grid */
       z-index: auto;
     }
 
     /* === Preview windows === */
     .preview {
       position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
+      top: 50%; left: 50%; transform: translate(-50%, -50%);
       z-index: 20;
-      width: 600px;
-      min-width: 200px;
-      height: auto;
-      min-height: 500px;
-      border: none;
-      padding: 30px;
+      width: 600px; min-width: 200px;
+      height: auto; min-height: 300px;
+      border: none; padding: 30px;
       background: var(--bg-primary);
-      overflow: auto; /* vertical scroll uses DOS aesthetic */
-      resize: both;
-      cursor: default;
+      overflow: auto; /* vertical scroll shows DOS scrollbar */
+      resize: both; cursor: default;
       box-shadow: 0 4px 20px var(--shadow-color);
       transition: background 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
     }
 
     .close-button {
-      position: absolute;
-      top: 20px;
-      right: 20px;
-      padding: 5px 10px;
-      background: transparent;
-      color: var(--text-secondary);
-      border: 1px solid var(--border-color);
-      cursor: pointer;
-      font-size: 14px;
-      font-family: "Neue Montreal Mono", monospace;
-      transition: all 0.2s;
-      z-index: 30;
-      pointer-events: auto;
+      position: absolute; top: 20px; right: 20px;
+      padding: 5px 10px; background: transparent;
+      color: var(--text-secondary); border: 1px solid var(--border-color);
+      cursor: pointer; font-size: 14px; font-family: inherit;
+      transition: all 0.2s; z-index: 30; pointer-events: auto;
     }
     .close-button:hover { color: var(--text-primary); border-color: var(--text-primary); }
     .close-button::before { content: "×"; font-weight: bold; font-size: 20px; }
 
-    /* Title ABOVE image (per the version you liked) */
+    /* Title ABOVE image (as you liked) */
     .preview-title {
-      font-size: 16px;
-      font-weight: 700;
-      margin: 0 0 12px 0;
-      color: var(--text-primary);
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      line-height: 1.2;
+      font-size: 16px; font-weight: 700;
+      margin: 0 0 12px 0; color: var(--text-primary);
+      text-transform: uppercase; letter-spacing: 0.5px; line-height: 1.2;
     }
 
     .preview-image-wrapper { width: 100%; margin-bottom: 14px; }
-    .preview-image-wrapper img,
-    .preview-image-wrapper video {
-      width: 100%;
-      height: auto;
-      display: block;
-      border: none;
+    .preview-image-wrapper img, .preview-image-wrapper video {
+      width: 100%; height: auto; display: block; border: none;
     }
 
     .preview-blurb {
-      font-size: 11px;
-      line-height: 1.4;
-      color: var(--text-secondary);
-      text-align: justify;
-      margin: 0;
-      text-transform: uppercase;
-      letter-spacing: 0.3px;
+      font-size: 11px; line-height: 1.4; color: var(--text-secondary);
+      text-align: justify; margin: 0; text-transform: uppercase; letter-spacing: 0.3px;
     }
 
     .preview-blurb img {
-      float: left;
-      margin: 0 12px 8px 0;
-      border: 1px solid var(--border-color);
-      height: 45px;
-      width: auto;
-      object-fit: cover;
+      float: left; margin: 0 12px 8px 0; border: 1px solid var(--border-color);
+      height: 45px; width: auto; object-fit: cover;
     }
-    .preview-blurb img:nth-of-type(2) {
-      float: right;
-      margin: 0 0 8px 12px;
-    }
+    .preview-blurb img:nth-of-type(2) { float: right; margin: 0 0 8px 12px; }
 
-    .three-container {
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      z-index: 1;
-      display: none;
-    }
+    .three-container { position: fixed; inset: 0; pointer-events: none; z-index: 1; display: none; }
 
-    /* Grid-mode controls */
+    /* Grid mode UI */
     .preview .grid-resize { display: none; }
     .preview.in-grid .grid-resize {
-      display: block;
-      position: absolute;
-      right: 6px;
-      bottom: 6px;
-      width: 16px;
-      height: 16px;
-      cursor: nwse-resize;
-      z-index: 40;
-      opacity: 0.75;
+      display: block; position: absolute; right: 6px; bottom: 6px;
+      width: 16px; height: 16px; cursor: nwse-resize; z-index: 40; opacity: 0.75;
       background:
         linear-gradient(135deg, transparent 50%, var(--border-color) 50%) no-repeat,
         linear-gradient(135deg, transparent 40%, var(--text-secondary) 40%) no-repeat;
@@ -420,7 +315,6 @@
 
   <div class="content">
     <h4>Projects</h4>
-
     <ul id="projectList">
       <li data-project="SOLARIS"><span>01</span>SOLARIS</li>
       <li data-project="GO MAD"><span>02</span>GO MAD</li>
@@ -449,7 +343,7 @@
       <li data-project="PROJECT TWENTY-FIVE"><span>25</span>PROJECT TWENTY-FIVE</li>
     </ul>
 
-    <!-- Footer details relocated into menu as a single info bar -->
+    <!-- Footer info moved into menu -->
     <div class="info-bar" id="infoBar">
       <div class="info-cell">DNGR GOODS</div>
       <div class="info-cell">DANIAL GRAHAM</div>
@@ -459,8 +353,6 @@
     </div>
   </div>
 
-  <!-- Original footer kept but hidden in CSS -->
-
   <div class="three-container"></div>
 
   <script>
@@ -468,14 +360,13 @@
     let gridMode = false;
     let zIndex = 10;
 
-    // Theme toggle (persist)
+    // Theme toggle
     const invertBtn = document.getElementById('invertBtn');
     const savedDarkMode = localStorage.getItem('darkMode') === 'true';
     if (savedDarkMode) document.body.classList.add('dark-mode');
     invertBtn.addEventListener('click', () => {
       document.body.classList.toggle('dark-mode');
-      const isDark = document.body.classList.contains('dark-mode');
-      localStorage.setItem('darkMode', isDark);
+      localStorage.setItem('darkMode', document.body.classList.contains('dark-mode'));
     });
 
     // Grid toggle
@@ -490,161 +381,73 @@
 
     // Free mode dragging
     const makeDraggable = (element) => {
-      let isDragging = false;
-      let dragStartX, dragStartY, elementStartX, elementStartY;
-
-      const startDrag = (e) => {
+      let isDragging = false, sx, sy, ex, ey;
+      const start = (e) => {
         if (gridMode) return;
         isDragging = true;
-        dragStartX = e.touches ? e.touches[0].clientX : e.clientX;
-        dragStartY = e.touches ? e.touches[0].clientY : e.clientY;
-        elementStartX = element.offsetLeft;
-        elementStartY = element.offsetTop;
+        sx = e.touches ? e.touches[0].clientX : e.clientX;
+        sy = e.touches ? e.touches[0].clientY : e.clientY;
+        ex = element.offsetLeft; ey = element.offsetTop;
         element.style.cursor = 'grabbing';
         element.style.zIndex = `${++zIndex}`;
       };
-
-      const drag = (e) => {
+      const move = (e) => {
         if (!isDragging || gridMode) return;
-        const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-        const clientY = e.touches ? e.touches[0].clientY : e.clientY;
-        const deltaX = clientX - dragStartX;
-        const deltaY = clientY - dragStartY;
-        element.style.left = `${elementStartX + deltaX}px`;
-        element.style.top = `${elementStartY + deltaY}px`;
+        const cx = e.touches ? e.touches[0].clientX : e.clientX;
+        const cy = e.touches ? e.touches[0].clientY : e.clientY;
+        element.style.left = `${ex + (cx - sx)}px`;
+        element.style.top  = `${ey + (cy - sy)}px`;
       };
-
-      const stopDrag = () => {
-        isDragging = false;
-        element.style.cursor = gridMode ? 'default' : 'grab';
-      };
-
-      element.addEventListener('mousedown', (e) => startDrag(e));
-      element.addEventListener('mousemove', (e) => drag(e));
-      element.addEventListener('mouseup', stopDrag);
-      element.addEventListener('mouseleave', stopDrag);
-
-      element.addEventListener('touchstart', (e) => startDrag(e));
-      element.addEventListener('touchmove', (e) => drag(e));
-      element.addEventListener('touchend', stopDrag);
-      element.addEventListener('touchcancel', stopDrag);
+      const stop = () => { isDragging = false; element.style.cursor = gridMode ? 'default' : 'grab'; };
+      element.addEventListener('mousedown', start); element.addEventListener('mousemove', move);
+      element.addEventListener('mouseup', stop); element.addEventListener('mouseleave', stop);
+      element.addEventListener('touchstart', start, {passive:false});
+      element.addEventListener('touchmove', move, {passive:false});
+      element.addEventListener('touchend', stop); element.addEventListener('touchcancel', stop);
     };
 
-    // Project data (kept as in your original; blurb contains inline <img> details)
+    // Project data (you can replace placeholders with your actual assets)
     const projectData = {
       'SOLARIS': {
         image: 'https://github.com/danial-dngr/dngrgoods/blob/main/Holiday%20Sauce%20-%20Holding%20Sea%20horse%20.png?raw=true',
-        blurb: '<img src="https://github.com/danial-dngr/dngrgoods/blob/main/Holiday%20Sauce%20-%20Holding%20Sea%20horse%20.png?raw=true" alt="Solaris detail 1">SOLARIS IS AN EXPLORATION INTO MINIMAL SOLAR HOUSING FOR URBAN SPACES. THE PROJECT EXAMINES HOW ARCHITECTURAL PRINCIPLES CAN BE APPLIED TO SUSTAINABLE LIVING ENVIRONMENTS. LOREM IPSUM DOLOR SIT AMET, CONSECTETUR ADIPISCING ELIT. <img src="https://github.com/danial-dngr/dngrgoods/blob/main/Holiday%20Sauce%20-%20Instax%20Photo.png?raw=true" alt="Solaris detail 2"> SED DO EIUSMOD TEMPOR INCIDIDUNT UT LABORE ET DOLORE MAGNA ALIQUA. UT ENIM AD MINIM VENIAM, QUIS NOSTRUD EXERCITATION ULLAMCO LABORIS NISI UT ALIQUIP EX EA COMMODO CONSEQUAT DUIS AUTE IRURE DOLOR IN REPREHENDERIT VOLUPTATE VELIT ESSE CILLUM.'
+        blurb: '<img src="https://github.com/danial-dngr/dngrgoods/blob/main/Holiday%20Sauce%20-%20Instax%20Photo.png?raw=true" alt="detail" /> SOLARIS IS AN EXPLORATION INTO MINIMAL SOLAR HOUSING FOR URBAN SPACES.'
       },
-      'GO MAD': {
-        image: 'path-to-go-mad-image.jpg',
-        blurb: '<img src="https://via.placeholder.com/100x45/FF0000/FFFFFF?text=Detail+1" alt="Go Mad detail 1"><img src="https://via.placeholder.com/100x45/FFFFFF/FF0000?text=Detail+2" alt="Go Mad detail 2">GO MAD IS AN ENERGETIC PROJECT AIMED AT CAPTURING HUMAN CREATIVITY AND EXPRESSION. THIS INITIATIVE CELEBRATES THE INTERSECTION OF ART, DESIGN, AND HUMAN EMOTION. DUIS AUTE IRURE DOLOR IN REPREHENDERIT IN VOLUPTATE VELIT ESSE CILLUM DOLORE EU FUGIAT NULLA PARIATUR. EXCEPTEUR SINT OCCAECAT CUPIDATAT NON PROIDENT, SUNT IN CULPA QUI OFFICIA DESERUNT MOLLIT ANIM ID EST LABORUM SED UT PERSPICIATIS UNDE OMNIS.'
-      },
-      'LSW': {
-        image: 'path-to-lsw-image.jpg',
-        blurb: '<img src="https://via.placeholder.com/100x45/00AA00/FFFFFF?text=Detail+1" alt="LSW detail 1"><img src="https://via.placeholder.com/100x45/FFFFFF/00AA00?text=Detail+2" alt="LSW detail 2">LSW ENCAPSULATES THE ESSENCE OF LIVING SIMPLY WITH WATER THEMES AT ITS CORE. THE PROJECT EXPLORES THE RELATIONSHIP BETWEEN MINIMALISM AND NATURAL RESOURCES. SED UT PERSPICIATIS UNDE OMNIS ISTE NATUS ERROR SIT VOLUPTATEM ACCUSANTIUM DOLOREMQUE LAUDANTIUM, TOTAM REM APERIAM, EAQUE IPSA QUAE AB ILLO INVENTORE VERITATIS ET QUASI ARCHITECTO BEATAE VITAE DICTA SUNT EXPLICABO NEMO ENIM.'
-      },
-      'VANCE LIVING': {
-        image: 'path-to-vance-living-image.jpg',
-        blurb: '<img src="https://via.placeholder.com/100x45/AA00AA/FFFFFF?text=Detail+1" alt="Vance detail 1"><img src="https://via.placeholder.com/100x45/FFFFFF/AA00AA?text=Detail+2" alt="Vance detail 2">VANCE LIVING IS A BOLD PROJECT BRINGING MODULAR ARCHITECTURE INTO DAILY LIFE. THIS INNOVATIVE APPROACH REIMAGINES HOW WE DESIGN AND INHABIT SPACES. NEMO ENIM IPSAM VOLUPTATEM QUIA VOLUPTAS SIT ASPERNATUR AUT ODIT AUT FUGIT, SED QUIA CONSEQUUNTUR MAGNI DOLORES EOS QUI RATIONE VOLUPTATEM SEQUI NESCIUNT NEQUE PORRO QUISQUAM EST QUI DOLOREM IPSUM QUIA DOLOR SIT AMET CONSECTETUR.'
-      },
-      'ABOUT DNGR': {
-        image: 'https://dngrgoods.com/wp-content/uploads/2023/07/DSC01289-1.png',
-        blurb: '<img src="https://via.placeholder.com/100x45/FFaa00/000000?text=Detail+1" alt="DNGR detail 1"><img src="https://via.placeholder.com/100x45/000000/FFaa00?text=Detail+2" alt="DNGR detail 2">CREATIVE DIRECTOR DANIAL GRAHAM SPECIALIZES IN BRANDING IDENTITY, ART DIRECTION, TYPOGRAPHY, LOGO DESIGN, AND STRATEGIC DESIGN. WITH EXPERIENCE IN MOTION GRAPHICS, PHOTOGRAPHY, AND COMMERCIAL SIGNAGE PROJECT MANAGEMENT, DANIAL BRINGS A SOLUTIONS-ORIENTED APPROACH TO ALL CREATIVE ENDEAVORS. LOREM IPSUM DOLOR SIT AMET, CONSECTETUR ADIPISCING ELIT, SED DO EIUSMOD TEMPOR INCIDIDUNT UT LABORE ET DOLORE MAGNA ALIQUA UT ENIM AD MINIM VENIAM.'
-      },
+      'GO MAD': { image: 'https://via.placeholder.com/1200x700/000000/FFFFFF?text=GO+MAD', blurb: 'GO MAD IS AN ENERGETIC PROJECT AIMED AT CAPTURING HUMAN CREATIVITY.' },
+      'LSW': { image: 'https://via.placeholder.com/1200x700/003300/FFFFFF?text=LSW', blurb: 'LSW ENCAPSULATES THE ESSENCE OF LIVING SIMPLY WITH WATER THEMES.' },
+      'VANCE LIVING': { image: 'https://via.placeholder.com/1200x700/330033/FFFFFF?text=VANCE+LIVING', blurb: 'VANCE LIVING REIMAGINES MODULAR ARCHITECTURE IN DAILY LIFE.' },
+      'ABOUT DNGR': { image: 'https://dngrgoods.com/wp-content/uploads/2023/07/DSC01289-1.png', blurb: 'CREATIVE DIRECTION, BRAND IDENTITY, TYPOGRAPHY, LOGO & STRATEGIC DESIGN.' },
       'NOCTURNAL INGESTIONS': {
         image: 'https://github.com/danial-dngr/dngrgoods/blob/main/Screen%20Shot%202022-11-03%20at%205.31.19%20pm.png?raw=true',
-        blurb: '<img src="https://via.placeholder.com/100x45/333333/CCCCCC?text=Detail+1" alt="Nocturnal detail 1"><img src="https://via.placeholder.com/100x45/CCCCCC/333333?text=Detail+2" alt="Nocturnal detail 2">NOCTURNAL INGESTIONS IS THE LATE NIGHT RESTAURANT IDENTITY DESIGNED WITH THE BENDIGO HOTEL IN COLLINGWOOD, A VENUE KNOWN FOR ITS LOUD GIGS AND CHEAP PINTS. THE SIGNAGE DESIGN TIES DIRECTLY TO THE VENUE\'S ROUGH INTERIOR AND PUNK ATMOSPHERE. UT LABORUM ET DOLORE MAGNA ALIQUA UT ENIM AD MINIM VENIAM QUIS NOSTRUD EXERCITATION ULLAMCO LABORIS NISI UT ALIQUIP EX EA COMMODO CONSEQUAT DUIS AUTE IRURE DOLOR IN REPREHENDERIT VOLUPTATE VELIT ESSE CILLUM DOLORE.'
+        blurb: 'LATE NIGHT RESTAURANT IDENTITY WITH BENDIGO HOTEL, COLLINGWOOD.'
       },
       'THAIMESE': {
         image: 'https://github.com/danial-dngr/dngrgoods/blob/main/MMALE%20MODEL%20WEARING%20SHIRT%20FUll.jpg?raw=true',
-        blurb: '<img src="https://via.placeholder.com/100x45/333333/CCCCCC?text=Detail+1" alt="Detail+1"><img src="https://via.placeholder.com/100x45/CCCCCC/333333?text=Detail+2" alt="Detail+2">THAIMESE PROJECT DESCRIPTION HERE. THIS IS A BOLD PROJECT BRINGING MODULAR ARCHITECTURE INTO DAILY LIFE. THIS INNOVATIVE APPROACH REIMAGINES HOW WE DESIGN AND INHABIT SPACES. NEMO ENIM IPSAM VOLUPTATEM QUIA VOLUPTAS SIT ASPERNATUR AUT ODIT AUT FUGIT, SED QUIA CONSEQUUNTUR MAGNI DOLORES EOS QUI RATIONE VOLUPTATEM SEQUI.'
+        blurb: 'THAIMESE PROJECT DESCRIPTION HERE.'
       },
       'KINETIC MOTION': {
         image: 'https://github.com/danial-dngr/dngrgoods/blob/main/FINDING%20TIME%203.mp4?raw=true',
-        blurb: '<img src="https://via.placeholder.com/100x45/333333/CCCCCC?text=Detail+1" alt="Detail+1"><img src="https://via.placeholder.com/100x45/CCCCCC/333333?text=Detail+2" alt="Detail+2">KINETIC MOTION EXPLORES DYNAMIC MOVEMENT AND VISUAL RHYTHM. THIS PROJECT CELEBRATES THE INTERSECTION OF ART, DESIGN, AND HUMAN EMOTION. DUIS AUTE IRURE DOLOR IN REPREHENDERIT IN VOLUPTATE VELIT ESSE CILLUM DOLORE EU FUGIAT NULLA PARIATUR. EXCEPTEUR SINT OCCAECAT CUPIDATAT NON PROIDENT.'
+        blurb: 'KINETIC MOTION EXPLORES DYNAMIC MOVEMENT AND VISUAL RHYTHM.'
       },
-      'PROJECT NINE': {
-        image: 'path-to-project-nine.jpg',
-        blurb: 'PROJECT NINE DESCRIPTION. LOREM IPSUM DOLOR SIT AMET, CONSECTETUR ADIPISCING ELIT, SED DO EIUSMOD TEMPOR INCIDIDUNT UT LABORE ET DOLORE MAGNA ALIQUA.'
-      },
-      'PROJECT TEN': {
-        image: 'path-to-project-ten.jpg',
-        blurb: 'PROJECT TEN DESCRIPTION. LOREM IPSUM DOLOR SIT AMET, CONSECTETUR ADIPISCING ELIT, SED DO EIUSMOD TEMPOR INCIDIDUNT UT LABORE ET DOLORE MAGNA ALIQUA.'
-      },
-      'PROJECT ELEVEN': {
-        image: 'path-to-project-eleven.jpg',
-        blurb: 'PROJECT ELEVEN DESCRIPTION. LOREM IPSUM DOLOR SIT AMET, CONSECTETUR ADIPISCING ELIT, SED DO EIUSMOD TEMPOR INCIDIDUNT UT LABORE ET DOLORE MAGNA ALIQUA.'
-      },
-      'PROJECT TWELVE': {
-        image: 'path-to-project-twelve.jpg',
-        blurb: 'PROJECT TWELVE DESCRIPTION. LOREM IPSUM DOLOR SIT AMET, CONSECTETUR ADIPISCING ELIT, SED DO EIUSMOD TEMPOR INCIDIDUNT UT LABORE ET DOLORE MAGNA ALIQUA.'
-      },
-      'PROJECT THIRTEEN': {
-        image: 'path-to-project-thirteen.jpg',
-        blurb: 'PROJECT THIRTEEN DESCRIPTION. LOREM IPSUM DOLOR SIT AMET, CONSECTETUR ADIPISCING ELIT, SED DO EIUSMOD TEMPOR INCIDIDUNT UT LABORE ET DOLORE MAGNA ALIQUA.'
-      },
-      'PROJECT FOURTEEN': {
-        image: 'path-to-project-fourteen.jpg',
-        blurb: 'PROJECT FOURTEEN DESCRIPTION. LOREM IPSUM DOLOR SIT AMET, CONSECTETUR ADIPISCING ELIT, SED DO EIUSMOD TEMPOR INCIDIDUNT UT LABORE ET DOLORE MAGNA ALIQUA.'
-      },
-      'PROJECT FIFTEEN': {
-        image: 'path-to-project-fifteen.jpg',
-        blurb: 'PROJECT FIFTEEN DESCRIPTION. LOREM IPSUM DOLOR SIT AMET, CONSECTETUR ADIPISCING ELIT, SED DO EIUSMOD TEMPOR INCIDIDUNT UT LABORE ET DOLORE MAGNA ALIQUA.'
-      },
-      'PROJECT SIXTEEN': {
-        image: 'path-to-project-sixteen.jpg',
-        blurb: 'PROJECT SIXTEEN DESCRIPTION. LOREM IPSUM DOLOR SIT AMET, CONSECTETUR ADIPISCING ELIT, SED DO EIUSMOD TEMPOR INCIDIDUNT UT LABORE ET DOLORE MAGNA ALIQUA.'
-      },
-      'PROJECT SEVENTEEN': {
-        image: 'path-to-project-seventeen.jpg',
-        blurb: 'PROJECT SEVENTEEN DESCRIPTION. LOREM IPSUM DOLOR SIT AMET, CONSECTETUR ADIPISCING ELIT, SED DO EIUSMOD TEMPOR INCIDIDUNT UT LABORE ET DOLORE MAGNA ALIQUA.'
-      },
-      'PROJECT EIGHTEEN': {
-        image: 'path-to-project-eighteen.jpg',
-        blurb: 'PROJECT EIGHTEEN DESCRIPTION. LOREM IPSUM DOLOR SIT AMET, CONSECTETUR ADIPISCING ELIT, SED DO EIUSMOD TEMPOR INCIDIDUNT UT LABORE ET DOLORE MAGNA ALIQUA.'
-      },
-      'PROJECT NINETEEN': {
-        image: 'path-to-project-nineteen.jpg',
-        blurb: 'PROJECT NINETEEN DESCRIPTION. LOREM IPSUM DOLOR SIT AMET, CONSECTETUR ADIPISCING ELIT, SED DO EIUSMOD TEMPOR INCIDIDUNT UT LABORE ET DOLORE MAGNA ALIQUA.'
-      },
-      'PROJECT TWENTY': {
-        image: 'path-to-project-twenty.jpg',
-        blurb: 'PROJECT TWENTY DESCRIPTION. LOREM IPSUM DOLOR SIT AMET, CONSECTETUR ADIPISCING ELIT, SED DO EIUSMOD TEMPOR INCIDIDUNT UT LABORE ET DOLORE MAGNA ALIQUA.'
-      },
-      'PROJECT TWENTY-ONE': {
-        image: 'path-to-project-twenty-one.jpg',
-        blurb: 'PROJECT TWENTY-ONE DESCRIPTION. LOREM IPSUM DOLOR SIT AMET, CONSECTETUR ADIPISCING ELIT, SED DO EIUSMOD TEMPOR INCIDIDUNT UT LABORE ET DOLORE MAGNA ALIQUA.'
-      },
-      'PROJECT TWENTY-TWO': {
-        image: 'path-to-project-twenty-two.jpg',
-        blurb: 'PROJECT TWENTY-TWO DESCRIPTION. LOREM IPSUM DOLOR SIT AMET, CONSECTETUR ADIPISCING ELIT, SED DO EIUSMOD TEMPOR INCIDIDUNT UT LABORE ET DOLORE MAGNA ALIQUA.'
-      },
-      'PROJECT TWENTY-THREE': {
-        image: 'path-to-project-twenty-three.jpg',
-        blurb: 'PROJECT TWENTY-THREE DESCRIPTION. LOREM IPSUM DOLOR SIT AMET, CONSECTETUR ADIPISCING ELIT, SED DO EIUSMOD TEMPOR INCIDIDUNT UT LABORE ET DOLORE MAGNA ALIQUA.'
-      },
-      'PROJECT TWENTY-FOUR': {
-        image: 'path-to-project-twenty-four.jpg',
-        blurb: 'PROJECT TWENTY-FOUR DESCRIPTION. LOREM IPSUM DOLOR SIT AMET, CONSECTETUR ADIPISCING ELIT, SED DO EIUSMOD TEMPOR INCIDIDUNT UT LABORE ET DOLORE MAGNA ALIQUA.'
-      },
-      'PROJECT TWENTY-FIVE': {
-        image: 'path-to-project-twenty-five.jpg',
-        blurb: 'PROJECT TWENTY-FIVE DESCRIPTION. LOREM IPSUM DOLOR SIT AMET, CONSECTETUR ADIPISCING ELIT, SED DO EIUSMOD TEMPOR INCIDIDUNT UT LABORE ET DOLORE MAGNA ALIQUA.'
-      }
+      'PROJECT NINE': { image: 'https://via.placeholder.com/1200x700/111111/FFFFFF?text=PROJECT+NINE', blurb: 'PROJECT NINE DESCRIPTION.' },
+      'PROJECT TEN': { image: 'https://via.placeholder.com/1200x700/1a1a1a/FFFFFF?text=PROJECT+TEN', blurb: 'PROJECT TEN DESCRIPTION.' },
+      'PROJECT ELEVEN': { image: 'https://via.placeholder.com/1200x700/222222/FFFFFF?text=PROJECT+ELEVEN', blurb: 'PROJECT ELEVEN DESCRIPTION.' },
+      'PROJECT TWELVE': { image: 'https://via.placeholder.com/1200x700/2a2a2a/FFFFFF?text=PROJECT+TWELVE', blurb: 'PROJECT TWELVE DESCRIPTION.' },
+      'PROJECT THIRTEEN': { image: 'https://via.placeholder.com/1200x700/333333/FFFFFF?text=PROJECT+THIRTEEN', blurb: 'PROJECT THIRTEEN DESCRIPTION.' },
+      'PROJECT FOURTEEN': { image: 'https://via.placeholder.com/1200x700/3a3a3a/FFFFFF?text=PROJECT+FOURTEEN', blurb: 'PROJECT FOURTEEN DESCRIPTION.' },
+      'PROJECT FIFTEEN': { image: 'https://via.placeholder.com/1200x700/444444/FFFFFF?text=PROJECT+FIFTEEN', blurb: 'PROJECT FIFTEEN DESCRIPTION.' },
+      'PROJECT SIXTEEN': { image: 'https://via.placeholder.com/1200x700/4a4a4a/FFFFFF?text=PROJECT+SIXTEEN', blurb: 'PROJECT SIXTEEN DESCRIPTION.' },
+      'PROJECT SEVENTEEN': { image: 'https://via.placeholder.com/1200x700/555555/FFFFFF?text=PROJECT+SEVENTEEN', blurb: 'PROJECT SEVENTEEN DESCRIPTION.' },
+      'PROJECT EIGHTEEN': { image: 'https://via.placeholder.com/1200x700/5a5a5a/FFFFFF?text=PROJECT+EIGHTEEN', blurb: 'PROJECT EIGHTEEN DESCRIPTION.' },
+      'PROJECT NINETEEN': { image: 'https://via.placeholder.com/1200x700/666666/FFFFFF?text=PROJECT+NINETEEN', blurb: 'PROJECT NINETEEN DESCRIPTION.' },
+      'PROJECT TWENTY': { image: 'https://via.placeholder.com/1200x700/6a6a6a/FFFFFF?text=PROJECT+TWENTY', blurb: 'PROJECT TWENTY DESCRIPTION.' },
+      'PROJECT TWENTY-ONE': { image: 'https://via.placeholder.com/1200x700/777777/FFFFFF?text=PROJECT+TWENTY-ONE', blurb: 'PROJECT TWENTY-ONE DESCRIPTION.' },
+      'PROJECT TWENTY-TWO': { image: 'https://via.placeholder.com/1200x700/7a7a7a/FFFFFF?text=PROJECT+TWENTY-TWO', blurb: 'PROJECT TWENTY-TWO DESCRIPTION.' },
+      'PROJECT TWENTY-THREE': { image: 'https://via.placeholder.com/1200x700/858585/FFFFFF?text=PROJECT+TWENTY-THREE', blurb: 'PROJECT TWENTY-THREE DESCRIPTION.' },
+      'PROJECT TWENTY-FOUR': { image: 'https://via.placeholder.com/1200x700/909090/FFFFFF?text=PROJECT+TWENTY-FOUR', blurb: 'PROJECT TWENTY-FOUR DESCRIPTION.' },
+      'PROJECT TWENTY-FIVE': { image: 'https://via.placeholder.com/1200x700/999999/FFFFFF?text=PROJECT+TWENTY-FIVE', blurb: 'PROJECT TWENTY-FIVE DESCRIPTION.' }
     };
 
-    const getRandomGridSize = () => {
-      const sizes = [
-        { col: 1, row: 1 },
-        { col: 1, row: 2 },
-        { col: 2, row: 1 },
-        { col: 2, row: 2 }
-      ];
-      return sizes[Math.floor(Math.random() * sizes.length)];
-    };
-
-    /* ===== Swiss grid metrics ===== */
+    /* === Helpers === */
     const getGridMetrics = () => {
       const styles = getComputedStyle(gridContainer);
       const root = getComputedStyle(document.documentElement);
@@ -652,75 +455,52 @@
       const gap = parseFloat(styles.gap || styles.columnGap || '15') || 15;
       const rect = gridContainer.getBoundingClientRect();
       const colWidth = (rect.width - gap * (cols - 1)) / cols;
-      const swissRow = root.getPropertyValue('--swiss-row').trim();
-      const rowHeight = parseFloat(swissRow) || 12;
+      const rh = parseFloat(root.getPropertyValue('--swiss-row')) || 12;
       const effCol = colWidth + gap;
-      const effRow = rowHeight + gap;
-      return { cols, gap, colWidth, rowHeight, effCol, effRow, rect };
+      const effRow = rh + gap;
+      const containerHeight = rect.height;
+      return { cols, gap, colWidth, rh, effCol, effRow, containerHeight };
     };
 
-    // Fit grid rows to content height (avoid collapsed panels)
-    const autoSizeRowSpan = (preview) => {
+    const autoSizeRowSpan = (preview, minRows=1) => {
       if (!gridMode) return;
-      const { rowHeight, gap } = getGridMetrics();
+      const { rh, gap } = getGridMetrics();
       const h = preview.getBoundingClientRect().height;
-      const rows = Math.max(1, Math.round((h + gap) / (rowHeight + gap)));
+      const rows = Math.max(minRows, Math.round((h + gap) / (rh + gap)));
       preview.dataset.rowSpan = String(rows);
       preview.style.gridRow = `span ${rows}`;
     };
 
-    // Create proper media node (image or video)
     const createMediaEl = (src, alt) => {
       const isVideo = /\.(mp4|webm|ogg)(\?.*)?$/i.test(src);
       if (isVideo) {
         const v = document.createElement('video');
-        v.src = src;
-        v.controls = true;
-        v.loop = true;
-        v.muted = true;
-        v.playsInline = true;
-        v.autoplay = true;
-        v.setAttribute('aria-label', alt || 'Project video');
-        v.setAttribute('preload', 'metadata');
+        v.src = src; v.controls = true; v.loop = true; v.muted = true; v.playsInline = true; v.autoplay = true;
+        v.setAttribute('aria-label', alt || 'Project video'); v.preload = 'metadata';
         return v;
       } else {
         const img = document.createElement('img');
-        img.src = src;
-        img.alt = alt || 'Project image';
-        img.loading = 'lazy';
-        img.draggable = false;
+        img.src = src; img.alt = alt || 'Project image'; img.loading = 'lazy'; img.draggable = false;
         return img;
       }
     };
 
-    // Ensure height correct after media loads / resizes
-    const ensureAutoSizeOnMediaLoad = (preview) => {
+    const ensureAutoSizeOnMediaLoad = (preview, minRows=1) => {
       const imgs = preview.querySelectorAll('img');
       const vids = preview.querySelectorAll('video');
-      const onReady = () => autoSizeRowSpan(preview);
+      const fit = () => autoSizeRowSpan(preview, minRows);
 
-      imgs.forEach(img => {
-        if (img.complete) onReady();
-        else img.addEventListener('load', onReady, { once: true });
-      });
-      vids.forEach(v => {
-        if (v.readyState >= 2) onReady();
-        else v.addEventListener('loadeddata', onReady, { once: true });
-      });
+      imgs.forEach(img => img.complete ? fit() : img.addEventListener('load', fit, {once:true}));
+      vids.forEach(v => (v.readyState >= 2) ? fit() : v.addEventListener('loadeddata', fit, {once:true}));
 
       if (window.ResizeObserver) {
-        if (preview._ro) {
-          try { preview._ro.disconnect(); } catch(e) {}
-        }
-        const ro = new ResizeObserver(() => {
-          if (gridMode) autoSizeRowSpan(preview);
-        });
+        if (preview._ro) { try { preview._ro.disconnect(); } catch(e){} }
+        const ro = new ResizeObserver(() => { if (gridMode) autoSizeRowSpan(preview, minRows); });
         ro.observe(preview);
         preview._ro = ro;
       }
     };
 
-    // Convert current pixel size → nearest grid spans
     const approxSpansFromPixels = (pxWidth, pxHeight) => {
       const { cols, effCol, effRow } = getGridMetrics();
       const colSpan = Math.min(cols, Math.max(1, Math.round(pxWidth / effCol)));
@@ -728,45 +508,6 @@
       return { colSpan, rowSpan };
     };
 
-    // Lock an absolute-positioned preview to grid preserving size & position
-    const lockToGridFromAbsolute = (preview) => {
-      const { cols, effCol, effRow, rect: gridRect } = getGridMetrics();
-      const r = preview.getBoundingClientRect();
-
-      const { colSpan, rowSpan } = approxSpansFromPixels(r.width, r.height);
-
-      let colStart = Math.floor((r.left - gridRect.left) / effCol) + 1;
-      let rowStart = Math.floor((r.top  - gridRect.top)  / effRow) + 1;
-
-      colStart = Math.max(1, Math.min(cols - colSpan + 1, colStart));
-      rowStart = Math.max(1, rowStart);
-
-      preview.dataset.colSpan = String(colSpan);
-      preview.dataset.rowSpan = String(rowSpan);
-      preview.dataset.colStart = String(colStart);
-      preview.dataset.rowStart = String(rowStart);
-
-      preview.style.gridColumn = `${colStart} / span ${colSpan}`;
-      preview.style.gridRow = `${rowStart} / span ${rowSpan}`;
-    };
-
-    // Random start placement in grid
-    const placeRandomInGrid = (preview) => {
-      const { cols } = getGridMetrics();
-      const colSpan = parseInt(preview.dataset.colSpan || '1', 10);
-      const rowSpan = parseInt(preview.dataset.rowSpan || '1', 10);
-      const maxColStart = Math.max(1, cols - colSpan + 1);
-      const colStart = Math.floor(Math.random() * maxColStart) + 1;
-      const rowStart = Math.floor(Math.random() * 20) + 1; // rows 1..20
-
-      preview.dataset.colStart = String(colStart);
-      preview.dataset.rowStart = String(rowStart);
-
-      preview.style.gridColumn = `${colStart} / span ${colSpan}`;
-      preview.style.gridRow = `${rowStart} / span ${rowSpan}`;
-    };
-
-    // Snap-to-grid resizing (grid mode)
     const addGridResizer = (preview) => {
       if (preview.querySelector('.grid-resize')) return;
       const handle = document.createElement('div');
@@ -777,9 +518,7 @@
         if (!gridMode) return;
         e.preventDefault();
         const start = e.touches ? e.touches[0] : e;
-        const startX = start.clientX;
-        const startY = start.clientY;
-
+        const startX = start.clientX, startY = start.clientY;
         const { cols, effCol, effRow } = getGridMetrics();
         let startColSpan = parseInt(preview.dataset.colSpan || '1', 10);
         let startRowSpan = parseInt(preview.dataset.rowSpan || '1', 10);
@@ -787,14 +526,14 @@
         const onMove = (ev) => {
           if (!gridMode) return;
           const p = ev.touches ? ev.touches[0] : ev;
-          const dx = p.clientX - startX;
-          const dy = p.clientY - startY;
+          const dx = p.clientX - startX, dy = p.clientY - startY;
 
           let newCol = Math.round((startColSpan * effCol + dx) / effCol);
           let newRow = Math.round((startRowSpan * effRow + dy) / effRow);
 
+          const minRows = Math.max(1, Math.ceil(500 / effRow)); /* enforce 500px min */
           newCol = Math.max(1, Math.min(cols, newCol));
-          newRow = Math.max(1, newRow);
+          newRow = Math.max(minRows, newRow);
 
           preview.dataset.colSpan = String(newCol);
           preview.dataset.rowSpan = String(newRow);
@@ -808,35 +547,32 @@
           window.removeEventListener('touchmove', onMove);
           window.removeEventListener('touchend', onUp);
           window.removeEventListener('touchcancel', onUp);
-          autoSizeRowSpan(preview);
+          const { effRow } = getGridMetrics();
+          autoSizeRowSpan(preview, Math.max(1, Math.ceil(500/effRow)));
         };
 
         window.addEventListener('mousemove', onMove);
         window.addEventListener('mouseup', onUp);
-        window.addEventListener('touchmove', onMove, { passive: false });
+        window.addEventListener('touchmove', onMove, {passive:false});
         window.addEventListener('touchend', onUp);
         window.addEventListener('touchcancel', onUp);
       };
 
       handle.addEventListener('mousedown', onDown);
-      handle.addEventListener('touchstart', onDown, { passive: false });
+      handle.addEventListener('touchstart', onDown, {passive:false});
     };
 
-    // Drag to MOVE in grid (snap by starts)
     const makeGridMovable = (preview) => {
       const onDown = (e) => {
         if (!gridMode) return;
         if (e.target && e.target.classList.contains('grid-resize')) return;
-
-        e.preventDefault();
-        e.stopPropagation();
+        e.preventDefault(); e.stopPropagation();
 
         const start = e.touches ? e.touches[0] : e;
-        const { cols, effCol, effRow, rect } = getGridMetrics();
-
+        const { cols, effCol, effRow } = getGridMetrics();
+        const rect = gridContainer.getBoundingClientRect();
         const colSpan = parseInt(preview.dataset.colSpan || '1', 10);
         const rowSpan = parseInt(preview.dataset.rowSpan || '1', 10);
-
         preview.classList.add('dragging');
 
         const onMove = (ev) => {
@@ -844,16 +580,12 @@
           const p = ev.touches ? ev.touches[0] : ev;
           const x = p.clientX - rect.left;
           const y = p.clientY - rect.top;
-
           let colStart = Math.floor(x / effCol) + 1;
           let rowStart = Math.floor(y / effRow) + 1;
-
           colStart = Math.max(1, Math.min(cols - colSpan + 1, colStart));
           rowStart = Math.max(1, rowStart);
-
           preview.dataset.colStart = String(colStart);
           preview.dataset.rowStart = String(rowStart);
-
           preview.style.gridColumn = `${colStart} / span ${colSpan}`;
           preview.style.gridRow = `${rowStart} / span ${rowSpan}`;
         };
@@ -865,90 +597,75 @@
           window.removeEventListener('touchend', onUp);
           window.removeEventListener('touchcancel', onUp);
           preview.classList.remove('dragging');
-          autoSizeRowSpan(preview);
+          const { effRow } = getGridMetrics();
+          autoSizeRowSpan(preview, Math.max(1, Math.ceil(500/effRow)));
         };
 
         window.addEventListener('mousemove', onMove);
         window.addEventListener('mouseup', onUp);
-        window.addEventListener('touchmove', onMove, { passive: false });
+        window.addEventListener('touchmove', onMove, {passive:false});
         window.addEventListener('touchend', onUp);
         window.addEventListener('touchcancel', onUp);
       };
 
       preview.addEventListener('mousedown', onDown);
-      preview.addEventListener('touchstart', onDown, { passive: false });
+      preview.addEventListener('touchstart', onDown, {passive:false});
     };
 
-    // Reflow into Swiss grid (preserve size/pos; random if new; fix collapse)
     const reorganizePreviewsInGrid = () => {
       gridContainer.innerHTML = '';
-      let isFirstItem = true;
+      const keys = Object.keys(openPreviews);
+      const count = keys.length;
+      const { cols, effRow, containerHeight } = getGridMetrics();
+      const minRows = Math.max(1, Math.ceil(500 / effRow)); /* 500px min */
 
-      Object.keys(openPreviews).forEach((project) => {
+      keys.forEach((project) => {
         const preview = openPreviews[project];
-
         gridContainer.appendChild(preview);
 
         preview.classList.add('in-grid');
         preview.style.position = 'relative';
-        preview.style.transform = `translate(var(--overlap-offset), var(--overlap-offset))`;
+        preview.style.transform = (count === 1) ? 'translate(0,0)' : `translate(var(--overlap-offset), var(--overlap-offset))`;
         preview.style.top = 'auto';
         preview.style.left = 'auto';
         preview.style.width = '100%';
         preview.style.height = 'auto';
 
-        const comingFromAbsolute = !preview.dataset.colSpan || preview.style.position === 'absolute';
-
-        if (comingFromAbsolute) {
-          if (!preview.dataset.colSpan || !preview.dataset.rowSpan) {
-            const base = isFirstItem ? { col: 2, row: 2 } : getRandomGridSize();
-            preview.dataset.colSpan = String(base.col);
-            preview.dataset.rowSpan = String(base.row);
-          }
-          lockToGridFromAbsolute(preview);
+        let colSpan, rowSpan;
+        if (count === 1) {
+          colSpan = cols;
+          rowSpan = Math.max(minRows, Math.ceil(containerHeight / effRow));
         } else {
-          const cSpan = parseInt(preview.dataset.colSpan, 10);
-          const rSpan = parseInt(preview.dataset.rowSpan, 10);
-          const cStart = parseInt(preview.dataset.colStart || '0', 10);
-          const rStart = parseInt(preview.dataset.rowStart || '0', 10);
-
-          if (cStart > 0 && rStart > 0) {
-            preview.style.gridColumn = `${cStart} / span ${cSpan}`;
-            preview.style.gridRow = `${rStart} / span ${rSpan}`;
-          } else {
-            preview.style.gridColumn = `span ${cSpan}`;
-            preview.style.gridRow = `span ${rSpan}`;
-            placeRandomInGrid(preview);
-          }
+          const r = preview.getBoundingClientRect();
+          const approx = approxSpansFromPixels(r.width || 600, r.height || 500);
+          colSpan = Math.min(cols, Math.max(1, approx.colSpan));
+          rowSpan = Math.max(minRows, approx.rowSpan);
         }
+
+        preview.dataset.colSpan = String(colSpan);
+        preview.dataset.rowSpan = String(rowSpan);
+
+        // Auto-placement: no explicit starts so the grid places where it fits
+        preview.style.gridColumn = `span ${colSpan}`;
+        preview.style.gridRow = `span ${rowSpan}`;
 
         addGridResizer(preview);
         makeGridMovable(preview);
 
-        // Auto-fit rows after media paint
         requestAnimationFrame(() => {
-          if (!preview.dataset.rowSpan) preview.dataset.rowSpan = '8';
-          ensureAutoSizeOnMediaLoad(preview);
-          autoSizeRowSpan(preview);
+          ensureAutoSizeOnMediaLoad(preview, minRows);
+          autoSizeRowSpan(preview, minRows);
         });
-
-        isFirstItem = false;
       });
     };
 
     const resetPreviewsToAbsolute = () => {
       Object.keys(openPreviews).forEach((project) => {
         const preview = openPreviews[project];
-
-        if (preview._ro) {
-          try { preview._ro.disconnect(); } catch (e) {}
-          delete preview._ro;
-        }
-
+        if (preview._ro) { try { preview._ro.disconnect(); } catch(e){} delete preview._ro; }
         const h = preview.querySelector('.grid-resize');
         if (h) h.remove();
-        preview.classList.remove('in-grid');
-        preview.classList.remove('dragging');
+        preview.classList.remove('in-grid', 'dragging');
 
         document.body.appendChild(preview);
         preview.style.position = 'absolute';
@@ -962,79 +679,82 @@
       });
     };
 
-    // Create preview (Title above media)
     const createPreviewContainer = (project) => {
       const data = projectData[project] || { image: '', blurb: 'DETAILS COMING SOON.' };
 
       if (openPreviews[project]) {
-        const previewContainer = openPreviews[project];
+        const p = openPreviews[project];
         if (!gridMode) {
-          previewContainer.style.top = '50%';
-          previewContainer.style.left = '50%';
-          previewContainer.style.transform = 'translate(-50%, -50%)';
+          p.style.top = '50%'; p.style.left = '50%'; p.style.transform = 'translate(-50%, -50%)';
         }
         return;
       }
 
-      const previewContainer = document.createElement('div');
-      previewContainer.className = 'preview';
-      previewContainer.style.top = '50%';
-      previewContainer.style.left = '50%';
-      previewContainer.style.transform = 'translate(-50%, -50%)';
-      previewContainer.style.zIndex = `${++zIndex}`;
+      const preview = document.createElement('div');
+      preview.className = 'preview';
+      preview.style.top = '50%';
+      preview.style.left = '50%';
+      preview.style.transform = 'translate(-50%, -50%)';
+      preview.style.zIndex = `${++zIndex}`;
 
-      // Build structure: Close | Title | Media | Blurb
-      previewContainer.innerHTML = `
+      // Title above media (as requested)
+      preview.innerHTML = `
         <button class="close-button" title="Close"></button>
         <div class="preview-title">${project}</div>
         <div class="preview-image-wrapper"></div>
         <p class="preview-blurb">${data.blurb}</p>
       `;
 
-      // Insert media (image or video)
-      const mediaWrap = previewContainer.querySelector('.preview-image-wrapper');
+      const mediaWrap = preview.querySelector('.preview-image-wrapper');
       mediaWrap.appendChild(createMediaEl(data.image, `${project} Media`));
 
-      previewContainer.querySelector('.close-button').addEventListener('click', () => {
-        // Cleanup observer if present
-        if (previewContainer._ro) {
-          try { previewContainer._ro.disconnect(); } catch(e) {}
-          delete previewContainer._ro;
-        }
-        previewContainer.remove();
+      preview.querySelector('.close-button').addEventListener('click', () => {
+        if (preview._ro) { try { preview._ro.disconnect(); } catch(e){} delete preview._ro; }
+        preview.remove();
         delete openPreviews[project];
       });
 
-      makeDraggable(previewContainer);
+      makeDraggable(preview);
 
       if (gridMode) {
-        const size = Object.keys(openPreviews).length === 0 ? { col: 2, row: 2 } : getRandomGridSize();
-        previewContainer.dataset.colSpan = String(size.col);
-        previewContainer.dataset.rowSpan = String(size.row);
+        gridContainer.appendChild(preview);
+        preview.classList.add('in-grid');
 
-        previewContainer.style.position = 'relative';
-        previewContainer.style.transform = `translate(var(--overlap-offset), var(--overlap-offset))`;
-        previewContainer.style.top = 'auto';
-        previewContainer.style.left = 'auto';
-        previewContainer.style.width = '100%';
-        previewContainer.style.height = 'auto';
+        // Determine if this will be the only one open
+        const countBefore = Object.keys(openPreviews).length; // number already open (before adding this)
+        const { cols, effRow, containerHeight } = getGridMetrics();
+        const minRows = Math.max(1, Math.ceil(500 / effRow));
 
-        gridContainer.appendChild(previewContainer);
-        previewContainer.classList.add('in-grid');
+        let colSpan, rowSpan;
+        if (countBefore === 0) {
+          // This is the only one → fill the viewable area
+          colSpan = cols;
+          rowSpan = Math.max(minRows, Math.ceil(containerHeight / effRow));
+          preview.style.transform = 'translate(0,0)';
+        } else {
+          // Otherwise open where it fits, with a minimum height of 500px
+          colSpan = 2;
+          rowSpan = Math.max(2, minRows);
+        }
 
-        placeRandomInGrid(previewContainer);
-        addGridResizer(previewContainer);
-        makeGridMovable(previewContainer);
-        ensureAutoSizeOnMediaLoad(previewContainer);
-        requestAnimationFrame(() => autoSizeRowSpan(previewContainer));
+        preview.dataset.colSpan = String(colSpan);
+        preview.dataset.rowSpan = String(rowSpan);
+        preview.style.gridColumn = `span ${colSpan}`;
+        preview.style.gridRow = `span ${rowSpan}`;
+
+        addGridResizer(preview);
+        makeGridMovable(preview);
+
+        ensureAutoSizeOnMediaLoad(preview, minRows);
+        requestAnimationFrame(() => autoSizeRowSpan(preview, minRows));
       } else {
-        document.body.appendChild(previewContainer);
+        document.body.appendChild(preview);
       }
 
-      openPreviews[project] = previewContainer;
+      openPreviews[project] = preview;
     };
 
-    // Bind project list
+    // Bind project clicks
     document.querySelectorAll('#projectList li[data-project]').forEach((item) => {
       item.addEventListener('click', () => {
         const project = item.getAttribute('data-project');
@@ -1042,13 +762,15 @@
       });
     });
 
-    // Re-fit on resize in grid
+    // Refit on resize in grid
     window.addEventListener('resize', () => {
       if (!gridMode) return;
-      Object.values(openPreviews).forEach(autoSizeRowSpan);
+      const { effRow } = getGridMetrics();
+      const minRows = Math.max(1, Math.ceil(500 / effRow));
+      Object.values(openPreviews).forEach(p => autoSizeRowSpan(p, minRows));
     });
 
-    // Prevent image ghost dragging globally
+    // Prevent image ghost dragging
     document.addEventListener('dragstart', (e) => {
       if (e.target && e.target.tagName === 'IMG') e.preventDefault();
     });
