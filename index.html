@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>DNGR GOODS</title>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+  <!-- Libs -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js" defer></script>
   <script src="https://unpkg.com/@dotlottie/player-component@2.7.12/dist/dotlottie-player.mjs" type="module"></script>
-  
+
   <style>
     :root {
       --bg-primary: white;
@@ -17,6 +19,21 @@
       --shadow-color: rgba(0,0,0,0.2);
       --hover-color: #0066cc;
       --scrollbar-thumb: #999;
+      --focus-ring: 2px solid #66b3ff;
+    }
+
+    /* Respect user’s system theme by default, unless they toggled */
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg-primary: #1a1a1a;
+        --bg-secondary: #2a2a2a;
+        --text-primary: #f0f0f0;
+        --text-secondary: #c0c0c0;
+        --border-color: #444;
+        --shadow-color: rgba(255,255,255,0.1);
+        --hover-color: #66b3ff;
+        --scrollbar-thumb: #666;
+      }
     }
 
     body.dark-mode {
@@ -33,6 +50,7 @@
     @font-face {
       font-family: "Neue Montreal Mono";
       src: url("path-to-neue-montreal-mono.woff2") format("woff2");
+      font-display: swap;
     }
 
     html, body {
@@ -45,9 +63,16 @@
     body {
       overflow: hidden;
       background: var(--bg-primary);
-      font-family: "Neue Montreal Mono", monospace;
+      font-family: "Neue Montreal Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
       color: var(--text-primary);
       transition: background 0.3s ease, color 0.3s ease;
+    }
+
+    /* Focus visibility */
+    :focus-visible {
+      outline: var(--focus-ring);
+      outline-offset: 2px;
+      border-radius: 4px;
     }
 
     .branding {
@@ -61,11 +86,6 @@
       display: flex;
       align-items: center;
       gap: 12px;
-    }
-
-    .branding-logo {
-      width: clamp(40px, 8vw, 80px);
-      height: clamp(40px, 8vw, 80px);
     }
 
     .branding-text {
@@ -84,7 +104,7 @@
       color: var(--text-primary);
       cursor: pointer;
       padding: 8px 12px;
-      font-family: "Neue Montreal Mono", monospace;
+      font-family: inherit;
       font-size: 16px;
       transition: all 0.2s ease;
       border-radius: 4px;
@@ -150,7 +170,7 @@
       list-style: none;
       padding: 0;
       margin: 0;
-      font-size: clamp(12px, 1vw, 11px);
+      font-size: clamp(14px, 1.4vw, 18px);
       line-height: 1;
       display: grid;
       grid-template-columns: repeat(5, 1fr);
@@ -159,6 +179,16 @@
       overflow-y: auto;
       row-gap: clamp(0.5px, 0.3vw, 3px);
     }
+
+    @media (max-width: 800px) {
+      .content ul {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    .content ul::-webkit-scrollbar { width: 6px; }
+    .content ul::-webkit-scrollbar-thumb { background: var(--scrollbar-thumb); }
+    .content ul::-webkit-scrollbar-track { background: transparent; }
 
     .content ul li {
       cursor: pointer;
@@ -170,16 +200,13 @@
       text-transform: uppercase;
       line-height: 1;
       padding-bottom: clamp(0.5px, 0.3vw, 2px);
-      transition: color 0.2s ease;
+      transition: color 0.2s ease, background 0.2s ease;
+      user-select: none;
     }
 
-    .content ul li:last-child {
-      border-right: none;
-    }
+    .content ul li:last-child { border-right: none; }
 
-    .content ul li:hover {
-      color: var(--hover-color);
-    }
+    .content ul li:hover { color: var(--hover-color); }
 
     .content ul li span {
       font-weight: 600;
@@ -204,21 +231,6 @@
       background: transparent !important;
     }
 
-    .content::-webkit-scrollbar,
-    .preview::-webkit-scrollbar {
-      width: 6px;
-    }
-
-    .content::-webkit-scrollbar-thumb,
-    .preview::-webkit-scrollbar-thumb {
-      background: var(--scrollbar-thumb);
-    }
-
-    .content::-webkit-scrollbar-track,
-    .preview::-webkit-scrollbar-track {
-      background: transparent;
-    }
-
     .grid-container {
       position: fixed;
       top: 80px;
@@ -234,9 +246,11 @@
       padding: 10px;
     }
 
-    .grid-container.active {
-      display: grid;
-    }
+    .grid-container.active { display: grid; }
+
+    .grid-container::-webkit-scrollbar { width: 6px; height: 6px; }
+    .grid-container::-webkit-scrollbar-thumb { background: var(--scrollbar-thumb); }
+    .grid-container::-webkit-scrollbar-track { background: transparent; }
 
     .grid-container .preview {
       position: relative !important;
@@ -257,8 +271,8 @@
       left: 50%;
       transform: translate(-50%, -50%);
       z-index: 20;
-      width: 600px;
-      min-width: 200px;
+      width: min(80vw, 600px);
+      min-width: 240px;
       height: auto;
       min-height: 300px;
       border: none;
@@ -271,24 +285,43 @@
       transition: background 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
     }
 
+    .preview:focus-within, .preview:focus {
+      box-shadow: 0 6px 24px var(--shadow-color);
+    }
+
+    .preview::-webkit-scrollbar { width: 6px; }
+    .preview::-webkit-scrollbar-thumb { background: var(--scrollbar-thumb); }
+    .preview::-webkit-scrollbar-track { background: transparent; }
+
+    .preview .titlebar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 12px;
+      cursor: grab; /* drag handle */
+      user-select: none;
+    }
+
+    .preview .titlebar:active { cursor: grabbing; }
+
     .close-button {
-      position: absolute;
-      top: 20px;
-      right: 20px;
       padding: 5px 10px;
       background: transparent;
       color: var(--text-secondary);
       border: 1px solid var(--border-color);
       cursor: pointer;
       font-size: 14px;
-      font-family: "Neue Montreal Mono", monospace;
+      font-family: inherit;
       transition: all 0.2s;
       z-index: 30;
+      border-radius: 4px;
     }
 
     .close-button:hover {
       color: var(--text-primary);
       border-color: var(--text-primary);
+      background: transparent;
     }
 
     .close-button::before {
@@ -299,20 +332,22 @@
 
     .preview-image-wrapper {
       width: 100%;
-      margin-bottom: 20px;
+      margin-bottom: 16px;
     }
 
-    .preview-image-wrapper img {
+    .preview-image-wrapper img,
+    .preview-image-wrapper video {
       width: 100%;
       height: auto;
       display: block;
       border: none;
+      border-radius: 2px;
     }
 
     .preview-title {
       font-size: 16px;
       font-weight: 600;
-      margin: 0 0 12px 0;
+      margin: 0 0 10px 0;
       color: var(--text-primary);
       text-transform: uppercase;
       letter-spacing: 0.5px;
@@ -343,269 +378,142 @@
 
     .three-container {
       position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
+      inset: 0;
       pointer-events: none;
       z-index: 1;
-      display: none;
+      display: none; /* placeholder */
     }
   </style>
 </head>
 <body>
-  <div class="lottie-wrapper">
-    <dotlottie-player src="https://lottie.host/d78de815-63f5-4083-8b23-d3833bcfd65f/1aTwDaznYJ.lottie" background="transparent" speed="0.5" loop autoplay hover></dotlottie-player>
+  <div class="lottie-wrapper" aria-hidden="true">
+    <dotlottie-player
+      src="https://lottie.host/d78de815-63f5-4083-8b23-d3833bcfd65f/1aTwDaznYJ.lottie"
+      background="transparent"
+      speed="0.5"
+      loop
+      autoplay
+      hover>
+    </dotlottie-player>
   </div>
 
   <div class="branding">
-    <div class="branding-text">DNGR GOODS</div>
+    <div class="branding-text" aria-label="DNGR GOODS">DNGR GOODS</div>
     <div class="control-buttons">
-      <button class="control-button" id="invertBtn" title="Invert Colors">🌓</button>
-      <button class="control-button" id="gridBtn" title="Toggle Grid Layout">⊞</button>
+      <button class="control-button" id="invertBtn" title="Toggle Dark Mode (D)" aria-label="Toggle dark mode">🌓</button>
+      <button class="control-button" id="gridBtn" title="Toggle Grid Layout (G)" aria-label="Toggle grid layout">⊞</button>
     </div>
   </div>
 
-  <div class="grid-container" id="gridContainer"></div>
+  <div class="grid-container" id="gridContainer" aria-live="polite"></div>
 
   <div class="content">
     <h4>Projects</h4>
-
-    <ul>
-      <li data-project="SOLARIS"><span>01</span>SOLARIS</li>
-      <li data-project="GO MAD"><span>02</span>GO MAD</li>
-      <li data-project="LSW"><span>03</span>LSW</li>
-      <li data-project="VANCE LIVING"><span>04</span>VANCE LIVING</li>
-      <li data-project="ABOUT DNGR"><span>05</span>ABOUT DNGR</li>
-      <li data-project="NOCTURNAL INGESTIONS"><span>06</span>NOCTURNAL</li>
-      <li data-project="THAIMESE"><span>07</span>THAIMESE</li>
-      <li data-project="KINETIC MOTION"><span>08</span>KINETIC MOTION</li>
-      <li data-project="PROJECT NINE"><span>09</span>PROJECT NINE</li>
-      <li data-project="PROJECT TEN"><span>10</span>PROJECT TEN</li>
-      <li data-project="PROJECT ELEVEN"><span>11</span>PROJECT ELEVEN</li>
-      <li data-project="PROJECT TWELVE"><span>12</span>PROJECT TWELVE</li>
-      <li data-project="PROJECT THIRTEEN"><span>13</span>PROJECT THIRTEEN</li>
-      <li data-project="PROJECT FOURTEEN"><span>14</span>PROJECT FOURTEEN</li>
-      <li data-project="PROJECT FIFTEEN"><span>15</span>PROJECT FIFTEEN</li>
-      <li data-project="PROJECT SIXTEEN"><span>16</span>PROJECT SIXTEEN</li>
-      <li data-project="PROJECT SEVENTEEN"><span>17</span>PROJECT SEVENTEEN</li>
-      <li data-project="PROJECT EIGHTEEN"><span>18</span>PROJECT EIGHTEEN</li>
-      <li data-project="PROJECT NINETEEN"><span>19</span>PROJECT NINETEEN</li>
-      <li data-project="PROJECT TWENTY"><span>20</span>PROJECT TWENTY</li>
-      <li data-project="PROJECT TWENTY-ONE"><span>21</span>PROJECT TWENTY-ONE</li>
-      <li data-project="PROJECT TWENTY-TWO"><span>22</span>PROJECT TWENTY-TWO</li>
-      <li data-project="PROJECT TWENTY-THREE"><span>23</span>PROJECT TWENTY-THREE</li>
-      <li data-project="PROJECT TWENTY-FOUR"><span>24</span>PROJECT TWENTY-FOUR</li>
-      <li data-project="PROJECT TWENTY-FIVE"><span>25</span>PROJECT TWENTY-FIVE</li>
+    <ul id="projectList" role="listbox" aria-label="Project list">
+      <li role="option" tabindex="0" data-project="SOLARIS"><span>01</span>SOLARIS</li>
+      <li role="option" tabindex="0" data-project="GO MAD"><span>02</span>GO MAD</li>
+      <li role="option" tabindex="0" data-project="LSW"><span>03</span>LSW</li>
+      <li role="option" tabindex="0" data-project="VANCE LIVING"><span>04</span>VANCE LIVING</li>
+      <li role="option" tabindex="0" data-project="ABOUT DNGR"><span>05</span>ABOUT DNGR</li>
+      <li role="option" tabindex="0" data-project="NOCTURNAL INGESTIONS"><span>06</span>NOCTURNAL</li>
+      <li role="option" tabindex="0" data-project="THAIMESE"><span>07</span>THAIMESE</li>
+      <li role="option" tabindex="0" data-project="KINETIC MOTION"><span>08</span>KINETIC MOTION</li>
+      <li role="option" tabindex="0" data-project="PROJECT NINE"><span>09</span>PROJECT NINE</li>
+      <li role="option" tabindex="0" data-project="PROJECT TEN"><span>10</span>PROJECT TEN</li>
+      <li role="option" tabindex="0" data-project="PROJECT ELEVEN"><span>11</span>PROJECT ELEVEN</li>
+      <li role="option" tabindex="0" data-project="PROJECT TWELVE"><span>12</span>PROJECT TWELVE</li>
+      <li role="option" tabindex="0" data-project="PROJECT THIRTEEN"><span>13</span>PROJECT THIRTEEN</li>
+      <li role="option" tabindex="0" data-project="PROJECT FOURTEEN"><span>14</span>PROJECT FOURTEEN</li>
+      <li role="option" tabindex="0" data-project="PROJECT FIFTEEN"><span>15</span>PROJECT FIFTEEN</li>
+      <li role="option" tabindex="0" data-project="PROJECT SIXTEEN"><span>16</span>PROJECT SIXTEEN</li>
+      <li role="option" tabindex="0" data-project="PROJECT SEVENTEEN"><span>17</span>PROJECT SEVENTEEN</li>
+      <li role="option" tabindex="0" data-project="PROJECT EIGHTEEN"><span>18</span>PROJECT EIGHTEEN</li>
+      <li role="option" tabindex="0" data-project="PROJECT NINETEEN"><span>19</span>PROJECT NINETEEN</li>
+      <li role="option" tabindex="0" data-project="PROJECT TWENTY"><span>20</span>PROJECT TWENTY</li>
+      <li role="option" tabindex="0" data-project="PROJECT TWENTY-ONE"><span>21</span>PROJECT TWENTY-ONE</li>
+      <li role="option" tabindex="0" data-project="PROJECT TWENTY-TWO"><span>22</span>PROJECT TWENTY-TWO</li>
+      <li role="option" tabindex="0" data-project="PROJECT TWENTY-THREE"><span>23</span>PROJECT TWENTY-THREE</li>
+      <li role="option" tabindex="0" data-project="PROJECT TWENTY-FOUR"><span>24</span>PROJECT TWENTY-FOUR</li>
+      <li role="option" tabindex="0" data-project="PROJECT TWENTY-FIVE"><span>25</span>PROJECT TWENTY-FIVE</li>
     </ul>
   </div>
 
-  <div class="footer">
+  <div class="footer" aria-hidden="true">
     <div>DNGR GOODS</div>
     <div>DANIAL GRAHAM</div>
-    <div>GOODS & VISUAL SERVICES</div>
-    <div>DANIAL@DNGRGOODS.COM</div>
-    <div>0400 165 501</div>
+    <div>GOODS &amp; VISUAL SERVICES</div>
+    <div><a href="mailto:danial@dngrgoods.com" style="color:inherit; text-decoration:none;">DANIAL@DNGRGOODS.COM</a></div>
+    <div><a href="tel:+61400165501" style="color:inherit; text-decoration:none;">0400 165 501</a></div>
   </div>
 
   <div class="three-container"></div>
 
   <script>
-    const openPreviews = {};
-    let gridMode = false;
-    let zIndex = 10;
+    (function() {
+      const openPreviews = {};
+      let gridMode = false;
+      let zIndex = 100; // higher than branding/content
+      const gridContainer = document.getElementById('gridContainer');
+      const invertBtn = document.getElementById('invertBtn');
+      const gridBtn = document.getElementById('gridBtn');
+      const projectList = document.getElementById('projectList');
 
-    // Color Inversion Toggle
-    const invertBtn = document.getElementById('invertBtn');
-    const savedDarkMode = localStorage.getItem('darkMode') === 'true';
-    
-    if (savedDarkMode) {
-      document.body.classList.add('dark-mode');
-    }
-
-    invertBtn.addEventListener('click', () => {
-      document.body.classList.toggle('dark-mode');
-      const isDark = document.body.classList.contains('dark-mode');
-      localStorage.setItem('darkMode', isDark);
-    });
-
-    // Grid Layout Toggle
-    const gridBtn = document.getElementById('gridBtn');
-    const gridContainer = document.getElementById('gridContainer');
-
-    gridBtn.addEventListener('click', () => {
-      gridMode = !gridMode;
-      gridContainer.classList.toggle('active');
-      
-      if (gridMode) {
-        reorganizePreviewsInGrid();
-      } else {
-        resetPreviewsToAbsolute();
+      // Theme initialization: prefer saved; else system preference
+      const savedDarkMode = localStorage.getItem('darkMode');
+      if (savedDarkMode === 'true') {
+        document.body.classList.add('dark-mode');
+      } else if (savedDarkMode === null && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark-mode');
       }
-    });
 
-    const makeDraggable = (element) => {
-      let isDragging = false;
-      let dragStartX, dragStartY, elementStartX, elementStartY;
+      invertBtn.addEventListener('click', () => {
+        document.body.classList.toggle('dark-mode');
+        const isDark = document.body.classList.contains('dark-mode');
+        localStorage.setItem('darkMode', isDark);
+      });
 
-      const startDrag = (e) => {
-        if (gridMode) return;
-        isDragging = true;
-        dragStartX = e.touches ? e.touches[0].clientX : e.clientX;
-        dragStartY = e.touches ? e.touches[0].clientY : e.clientY;
-        elementStartX = element.offsetLeft;
-        elementStartY = element.offsetTop;
-        element.style.cursor = 'grabbing';
-        element.style.zIndex = `${++zIndex}`;
-      };
+      gridBtn.addEventListener('click', () => toggleGrid());
 
-      const drag = (e) => {
-        if (!isDragging || gridMode) return;
-        const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-        const clientY = e.touches ? e.touches[0].clientY : e.clientY;
-        const deltaX = clientX - dragStartX;
-        const deltaY = clientY - dragStartY;
-        element.style.left = `${elementStartX + deltaX}px`;
-        element.style.top = `${elementStartY + deltaY}px`;
-      };
+      function toggleGrid(forceState) {
+        gridMode = typeof forceState === 'boolean' ? forceState : !gridMode;
+        gridContainer.classList.toggle('active', gridMode);
 
-      const stopDrag = () => {
-        isDragging = false;
-        element.style.cursor = gridMode ? 'default' : 'grab';
-      };
-
-      element.addEventListener('mousedown', (e) => startDrag(e));
-      element.addEventListener('mousemove', (e) => drag(e));
-      element.addEventListener('mouseup', stopDrag);
-      element.addEventListener('mouseleave', stopDrag);
-
-      element.addEventListener('touchstart', (e) => startDrag(e));
-      element.addEventListener('touchmove', (e) => drag(e));
-      element.addEventListener('touchend', stopDrag);
-      element.addEventListener('touchcancel', stopDrag);
-    };
-
-    const projectData = {
-      'SOLARIS': {
-        image: 'https://github.com/danial-dngr/dngrgoods/blob/main/Holiday%20Sauce%20-%20Holding%20Sea%20horse%20.png?raw=true',
-        blurb: '<img src="https://github.com/danial-dngr/dngrgoods/blob/main/Holiday%20Sauce%20-%20Holding%20Sea%20horse%20.png?raw=true" alt="Solaris detail 1">SOLARIS IS AN EXPLORATION INTO MINIMAL SOLAR HOUSING FOR URBAN SPACES. THE PROJECT EXAMINES HOW ARCHITECTURAL PRINCIPLES CAN BE APPLIED TO SUSTAINABLE LIVING ENVIRONMENTS. LOREM IPSUM DOLOR SIT AMET, CONSECTETUR ADIPISCING ELIT. <img src="https://github.com/danial-dngr/dngrgoods/blob/main/Holiday%20Sauce%20-%20Instax%20Photo.png?raw=true"> SED DO EIUSMOD TEMPOR INCIDIDUNT UT LABORE ET DOLORE MAGNA ALIQUA. UT ENIM AD MINIM VENIAM, QUIS NOSTRUD EXERCITATION ULLAMCO LABORIS NISI UT ALIQUIP EX EA COMMODO CONSEQUAT DUIS AUTE IRURE DOLOR IN REPREHENDERIT VOLUPTATE VELIT ESSE CILLUM.'
-      },
-      'GO MAD': {
-        image: 'path-to-go-mad-image.jpg',
-        blurb: '<img src="https://via.placeholder.com/100x45/FF0000/FFFFFF?text=Detail+1" alt="Go Mad detail 1"><img src="https://via.placeholder.com/100x45/FFFFFF/FF0000?text=Detail+2" alt="Go Mad detail 2">GO MAD IS AN ENERGETIC PROJECT AIMED AT CAPTURING HUMAN CREATIVITY AND EXPRESSION. THIS INITIATIVE CELEBRATES THE INTERSECTION OF ART, DESIGN, AND HUMAN EMOTION. DUIS AUTE IRURE DOLOR IN REPREHENDERIT IN VOLUPTATE VELIT ESSE CILLUM DOLORE EU FUGIAT NULLA PARIATUR. EXCEPTEUR SINT OCCAECAT CUPIDATAT NON PROIDENT, SUNT IN CULPA QUI OFFICIA DESERUNT MOLLIT ANIM ID EST LABORUM SED UT PERSPICIATIS UNDE OMNIS.'
-      },
-      'LSW': {
-        image: 'path-to-lsw-image.jpg',
-        blurb: '<img src="https://via.placeholder.com/100x45/00AA00/FFFFFF?text=Detail+1" alt="LSW detail 1"><img src="https://via.placeholder.com/100x45/FFFFFF/00AA00?text=Detail+2" alt="LSW detail 2">LSW ENCAPSULATES THE ESSENCE OF LIVING SIMPLY WITH WATER THEMES AT ITS CORE. THE PROJECT EXPLORES THE RELATIONSHIP BETWEEN MINIMALISM AND NATURAL RESOURCES. SED UT PERSPICIATIS UNDE OMNIS ISTE NATUS ERROR SIT VOLUPTATEM ACCUSANTIUM DOLOREMQUE LAUDANTIUM, TOTAM REM APERIAM, EAQUE IPSA QUAE AB ILLO INVENTORE VERITATIS ET QUASI ARCHITECTO BEATAE VITAE DICTA SUNT EXPLICABO NEMO ENIM.'
-      },
-      'VANCE LIVING': {
-        image: 'path-to-vance-living-image.jpg',
-        blurb: '<img src="https://via.placeholder.com/100x45/AA00AA/FFFFFF?text=Detail+1" alt="Vance detail 1"><img src="https://via.placeholder.com/100x45/FFFFFF/AA00AA?text=Detail+2" alt="Vance detail 2">VANCE LIVING IS A BOLD PROJECT BRINGING MODULAR ARCHITECTURE INTO DAILY LIFE. THIS INNOVATIVE APPROACH REIMAGINES HOW WE DESIGN AND INHABIT SPACES. NEMO ENIM IPSAM VOLUPTATEM QUIA VOLUPTAS SIT ASPERNATUR AUT ODIT AUT FUGIT, SED QUIA CONSEQUUNTUR MAGNI DOLORES EOS QUI RATIONE VOLUPTATEM SEQUI NESCIUNT NEQUE PORRO QUISQUAM EST QUI DOLOREM IPSUM QUIA DOLOR SIT AMET CONSECTETUR.'
-      },
-      'ABOUT DNGR': {
-        image: 'https://dngrgoods.com/wp-content/uploads/2023/07/DSC01289-1.png',
-        blurb: '<img src="https://via.placeholder.com/100x45/FFaa00/000000?text=Detail+1" alt="DNGR detail 1"><img src="https://via.placeholder.com/100x45/000000/FFaa00?text=Detail+2" alt="DNGR detail 2">CREATIVE DIRECTOR DANIAL GRAHAM SPECIALIZES IN BRANDING IDENTITY, ART DIRECTION, TYPOGRAPHY, LOGO DESIGN, AND STRATEGIC DESIGN. WITH EXPERIENCE IN MOTION GRAPHICS, PHOTOGRAPHY, AND COMMERCIAL SIGNAGE PROJECT MANAGEMENT, DANIAL BRINGS A SOLUTIONS-ORIENTED APPROACH TO ALL CREATIVE ENDEAVORS. LOREM IPSUM DOLOR SIT AMET, CONSECTETUR ADIPISCING ELIT, SED DO EIUSMOD TEMPOR INCIDIDUNT UT LABORE ET DOLORE MAGNA ALIQUA UT ENIM AD MINIM VENIAM.'
-      },
-      'NOCTURNAL INGESTIONS': {
-        image: 'https://github.com/danial-dngr/dngrgoods/blob/main/Screen%20Shot%202022-11-03%20at%205.31.19%20pm.png?raw=true',
-        blurb: '<img src="https://via.placeholder.com/100x45/333333/CCCCCC?text=Detail+1" alt="Nocturnal detail 1"><img src="https://via.placeholder.com/100x45/CCCCCC/333333?text=Detail+2" alt="Nocturnal detail 2">NOCTURNAL INGESTIONS IS THE LATE NIGHT RESTAURANT IDENTITY DESIGNED WITH THE BENDIGO HOTEL IN COLLINGWOOD, A VENUE KNOWN FOR ITS LOUD GIGS AND CHEAP PINTS. THE SIGNAGE DESIGN TIES DIRECTLY TO THE VENUE\'S ROUGH INTERIOR AND PUNK ATMOSPHERE. UT LABORUM ET DOLORE MAGNA ALIQUA UT ENIM AD MINIM VENIAM QUIS NOSTRUD EXERCITATION ULLAMCO LABORIS NISI UT ALIQUIP EX EA COMMODO CONSEQUAT DUIS AUTE IRURE DOLOR IN REPREHENDERIT VOLUPTATE VELIT ESSE CILLUM DOLORE.'
-      },
-      'THAIMESE': {
-        image: 'https://github.com/danial-dngr/dngrgoods/blob/main/MMALE%20MODEL%20WEARING%20SHIRT%20FUll.jpg?raw=true',
-        blurb: '<img src="https://via.placeholder.com/100x45/333333/CCCCCC?text=Detail+1" alt="Detail+1"><img src="https://via.placeholder.com/100x45/CCCCCC/333333?text=Detail+2" alt="Detail+2">THAIMESE PROJECT DESCRIPTION HERE. THIS IS A BOLD PROJECT BRINGING MODULAR ARCHITECTURE INTO DAILY LIFE. THIS INNOVATIVE APPROACH REIMAGINES HOW WE DESIGN AND INHABIT SPACES. NEMO ENIM IPSAM VOLUPTATEM QUIA VOLUPTAS SIT ASPERNATUR AUT ODIT AUT FUGIT, SED QUIA CONSEQUUNTUR MAGNI DOLORES EOS QUI RATIONE VOLUPTATEM SEQUI.'
-      },
-      'KINETIC MOTION': {
-        image: 'https://github.com/danial-dngr/dngrgoods/blob/main/FINDING%20TIME%203.mp4',
-        blurb: '<img src="https://via.placeholder.com/100x45/333333/CCCCCC?text=Detail+1" alt="Detail+1"><img src="https://via.placeholder.com/100x45/CCCCCC/333333?text=Detail+2" alt="Detail+2">KINETIC MOTION EXPLORES DYNAMIC MOVEMENT AND VISUAL RHYTHM. THIS PROJECT CELEBRATES THE INTERSECTION OF ART, DESIGN, AND HUMAN EMOTION. DUIS AUTE IRURE DOLOR IN REPREHENDERIT IN VOLUPTATE VELIT ESSE CILLUM DOLORE EU FUGIAT NULLA PARIATUR. EXCEPTEUR SINT OCCAECAT CUPIDATAT NON PROIDENT.'
-      },
-      'PROJECT NINE': {
-        image: 'https://assets.pinterest.com/ext/embed.html?id=493214596716846530',
-        blurb: 'PROJECT NINE DESCRIPTION. LOREM IPSUM DOLOR SIT AMET, CONSECTETUR ADIPISCING ELIT, SED DO EIUSMOD TEMPOR INCIDIDUNT UT LABORE ET DOLORE MAGNA ALIQUA.'
-      },
-      'PROJECT TEN': {
-        image: 'path-to-project-ten.jpg',
-        blurb: 'PROJECT TEN DESCRIPTION. LOREM IPSUM DOLOR SIT AMET, CONSECTETUR ADIPISCING ELIT, SED DO EIUSMOD TEMPOR INCIDIDUNT UT LABORE ET DOLORE MAGNA ALIQUA.'
-      },
-      'PROJECT ELEVEN': {
-        image: 'path-to-project-eleven.jpg',
-        blurb: 'PROJECT ELEVEN DESCRIPTION. LOREM IPSUM DOLOR SIT AMET, CONSECTETUR ADIPISCING ELIT, SED DO EIUSMOD TEMPOR INCIDIDUNT UT LABORE ET DOLORE MAGNA ALIQUA.'
-      },
-      'PROJECT TWELVE': {
-        image: 'path-to-project-twelve.jpg',
-        blurb: 'PROJECT TWELVE DESCRIPTION. LOREM IPSUM DOLOR SIT AMET, CONSECTETUR ADIPISCING ELIT, SED DO EIUSMOD TEMPOR INCIDIDUNT UT LABORE ET DOLORE MAGNA ALIQUA.'
-      },
-      'PROJECT THIRTEEN': {
-        image: 'path-to-project-thirteen.jpg',
-        blurb: 'PROJECT THIRTEEN DESCRIPTION. LOREM IPSUM DOLOR SIT AMET, CONSECTETUR ADIPISCING ELIT, SED DO EIUSMOD TEMPOR INCIDIDUNT UT LABORE ET DOLORE MAGNA ALIQUA.'
-      },
-      'PROJECT FOURTEEN': {
-        image: 'path-to-project-fourteen.jpg',
-        blurb: 'PROJECT FOURTEEN DESCRIPTION. LOREM IPSUM DOLOR SIT AMET, CONSECTETUR ADIPISCING ELIT, SED DO EIUSMOD TEMPOR INCIDIDUNT UT LABORE ET DOLORE MAGNA ALIQUA.'
-      },
-      'PROJECT FIFTEEN': {
-        image: 'path-to-project-fifteen.jpg',
-        blurb: 'PROJECT FIFTEEN DESCRIPTION. LOREM IPSUM DOLOR SIT AMET, CONSECTETUR ADIPISCING ELIT, SED DO EIUSMOD TEMPOR INCIDIDUNT UT LABORE ET DOLORE MAGNA ALIQUA.'
-      },
-      'PROJECT SIXTEEN': {
-        image: 'path-to-project-sixteen.jpg',
-        blurb: 'PROJECT SIXTEEN DESCRIPTION. LOREM IPSUM DOLOR SIT AMET, CONSECTETUR ADIPISCING ELIT, SED DO EIUSMOD TEMPOR INCIDIDUNT UT LABORE ET DOLORE MAGNA ALIQUA.'
-      },
-      'PROJECT SEVENTEEN': {
-        image: 'path-to-project-seventeen.jpg',
-        blurb: 'PROJECT SEVENTEEN DESCRIPTION. LOREM IPSUM DOLOR SIT AMET, CONSECTETUR ADIPISCING ELIT, SED DO EIUSMOD TEMPOR INCIDIDUNT UT LABORE ET DOLORE MAGNA ALIQUA.'
-      },
-      'PROJECT EIGHTEEN': {
-        image: 'path-to-project-eighteen.jpg',
-        blurb: 'PROJECT EIGHTEEN DESCRIPTION. LOREM IPSUM DOLOR SIT AMET, CONSECTETUR ADIPISCING ELIT, SED DO EIUSMOD TEMPOR INCIDIDUNT UT LABORE ET DOLORE MAGNA ALIQUA.'
-      },
-      'PROJECT NINETEEN': {
-        image: 'path-to-project-nineteen.jpg',
-        blurb: 'PROJECT NINETEEN DESCRIPTION. LOREM IPSUM DOLOR SIT AMET, CONSECTETUR ADIPISCING ELIT, SED DO EIUSMOD TEMPOR INCIDIDUNT UT LABORE ET DOLORE MAGNA ALIQUA.'
-      },
-      'PROJECT TWENTY': {
-        image: 'path-to-project-twenty.jpg',
-        blurb: 'PROJECT TWENTY DESCRIPTION. LOREM IPSUM DOLOR SIT AMET, CONSECTETUR ADIPISCING ELIT, SED DO EIUSMOD TEMPOR INCIDIDUNT UT LABORE ET DOLORE MAGNA ALIQUA.'
-      },
-      'PROJECT TWENTY-ONE': {
-        image: 'path-to-project-twenty-one.jpg',
-        blurb: 'PROJECT TWENTY-ONE DESCRIPTION. LOREM IPSUM DOLOR SIT AMET, CONSECTETUR ADIPISCING ELIT, SED DO EIUSMOD TEMPOR INCIDIDUNT UT LABORE ET DOLORE MAGNA ALIQUA.'
-      },
-      'PROJECT TWENTY-TWO': {
-        image: 'path-to-project-twenty-two.jpg',
-        blurb: 'PROJECT TWENTY-TWO DESCRIPTION. LOREM IPSUM DOLOR SIT AMET, CONSECTETUR ADIPISCING ELIT, SED DO EIUSMOD TEMPOR INCIDIDUNT UT LABORE ET DOLORE MAGNA ALIQUA.'
-      },
-      'PROJECT TWENTY-THREE': {
-        image: 'path-to-project-twenty-three.jpg',
-        blurb: 'PROJECT TWENTY-THREE DESCRIPTION. LOREM IPSUM DOLOR SIT AMET, CONSECTETUR ADIPISCING ELIT, SED DO EIUSMOD TEMPOR INCIDIDUNT UT LABORE ET DOLORE MAGNA ALIQUA.'
-      },
-      'PROJECT TWENTY-FOUR': {
-        image: 'path-to-project-twenty-four.jpg',
-        blurb: 'PROJECT TWENTY-FOUR DESCRIPTION. LOREM IPSUM DOLOR SIT AMET, CONSECTETUR ADIPISCING ELIT, SED DO EIUSMOD TEMPOR INCIDIDUNT UT LABORE ET DOLORE MAGNA ALIQUA.'
-      },
-      'PROJECT TWENTY-FIVE': {
-        image: 'path-to-project-twenty-five.jpg',
-        blurb: 'PROJECT TWENTY-FIVE DESCRIPTION. LOREM IPSUM DOLOR SIT AMET, CONSECTETUR ADIPISCING ELIT, SED DO EIUSMOD TEMPOR INCIDIDUNT UT LABORE ET DOLORE MAGNA ALIQUA.'
+        if (gridMode) {
+          reorganizePreviewsInGrid();
+        } else {
+          resetPreviewsToAbsolute();
+        }
       }
-    };
 
-    const getRandomGridSize = () => {
-      const sizes = [
-        { col: 1, row: 1 },
-        { col: 1, row: 2 },
-        { col: 2, row: 1 },
-        { col: 2, row: 2 }
-      ];
-      return sizes[Math.floor(Math.random() * sizes.length)];
-    };
+      function getRandomGridSize() {
+        const sizes = [
+          { col: 1, row: 1 },
+          { col: 1, row: 2 },
+          { col: 2, row: 1 },
+          { col: 2, row: 2 }
+        ];
+        return sizes[Math.floor(Math.random() * sizes.length)];
+      }
 
-    const reorganizePreviewsInGrid = () => {
-      gridContainer.innerHTML = '';
-      let isFirstItem = true;
+      function reorganizePreviewsInGrid() {
+        gridContainer.innerHTML = '';
+        let isFirstItem = true;
+        // Keep order by last zIndex change (rough “most recent first”)
+        const entries = Object.entries(openPreviews).sort((a,b) => {
+          const zA = parseInt(a[1].style.zIndex || '0', 10);
+          const zB = parseInt(b[1].style.zIndex || '0', 10);
+          return zB - zA;
+        });
 
-      Object.keys(openPreviews).forEach((project) => {
-        const preview = openPreviews[project];
-        const size = isFirstItem ? { col: 2, row: 2 } : getRandomGridSize();
-        
+        entries.forEach(([project, preview]) => {
+          const size = isFirstItem ? { col: 2, row: 2 } : getRandomGridSize();
+          assignGridStyles(preview, size);
+          gridContainer.appendChild(preview);
+          isFirstItem = false;
+        });
+      }
+
+      function assignGridStyles(preview, size) {
         preview.style.position = 'relative';
         preview.style.transform = 'none';
         preview.style.top = 'auto';
@@ -614,87 +522,305 @@
         preview.style.height = '100%';
         preview.style.gridColumn = `span ${size.col}`;
         preview.style.gridRow = `span ${size.row}`;
-        
-        gridContainer.appendChild(preview);
-        isFirstItem = false;
-      });
-    };
+      }
 
-    const resetPreviewsToAbsolute = () => {
-      Object.keys(openPreviews).forEach((project) => {
-        const preview = openPreviews[project];
-        document.body.appendChild(preview);
-        preview.style.position = 'absolute';
+      function resetPreviewsToAbsolute() {
+        Object.keys(openPreviews).forEach((project) => {
+          const preview = openPreviews[project];
+          document.body.appendChild(preview);
+          // Restore saved position if available
+          const posKey = positionKey(project);
+          const pos = JSON.parse(localStorage.getItem(posKey) || 'null');
+          preview.style.position = 'absolute';
+          if (pos) {
+            preview.style.top = `${pos.top}px`;
+            preview.style.left = `${pos.left}px`;
+            preview.style.transform = 'translate(0, 0)';
+          } else {
+            preview.style.top = '50%';
+            preview.style.left = '50%';
+            preview.style.transform = 'translate(-50%, -50%)';
+          }
+          preview.style.width = 'min(80vw, 600px)';
+          preview.style.height = 'auto';
+          preview.style.gridColumn = 'auto';
+          preview.style.gridRow = 'auto';
+        });
+      }
+
+      // Project data (unchanged paths kept, one entry uses mp4, which will render as <video>)
+      const projectData = {
+        'SOLARIS': {
+          image: 'https://github.com/danial-dngr/dngrgoods/blob/main/Holiday%20Sauce%20-%20Holding%20Sea%20horse%20.png?raw=true',
+          blurb: '<img src="https://github.com/danial-dngr/dngrgoods/blob/main/Holiday%20Sauce%20-%20Holding%20Sea%20horse%20.png?raw=true" alt="Solaris detail 1">SOLARIS IS AN EXPLORATION INTO MINIMAL SOLAR HOUSING FOR URBAN SPACES. THE PROJECT EXAMINES HOW ARCHITECTURAL PRINCIPLES CAN BE APPLIED TO SUSTAINABLE LIVING ENVIRONMENTS. LOREM IPSUM DOLOR SIT AMET, CONSECTETUR ADIPISCING ELIT. <img src="https://github.com/danial-dngr/dngrgoods/blob/main/Holiday%20Sauce%20-%20Instax%20Photo.png?raw=true" alt="Solaris detail 2"> SED DO EIUSMOD TEMPOR INCIDIDUNT UT LABORE ET DOLORE MAGNA ALIQUA. UT ENIM AD MINIM VENIAM, QUIS NOSTRUD EXERCITATION ULLAMCO LABORIS NISI UT ALIQUIP EX EA COMMODO CONSEQUAT DUIS AUTE IRURE DOLOR IN REPREHENDERIT VOLUPTATE VELIT ESSE CILLUM.'
+        },
+        'GO MAD': {
+          image: 'path-to-go-mad-image.jpg',
+          blurb: '<img src="https://via.placeholder.com/100x45/FF0000/FFFFFF?text=Detail+1" alt="Go Mad detail 1"><img src="https://via.placeholder.com/100x45/FFFFFF/FF0000?text=Detail+2" alt="Go Mad detail 2">GO MAD IS AN ENERGETIC PROJECT AIMED AT CAPTURING HUMAN CREATIVITY AND EXPRESSION. THIS INITIATIVE CELEBRATES THE INTERSECTION OF ART, DESIGN, AND HUMAN EMOTION. DUIS AUTE IRURE DOLOR IN REPREHENDERIT IN VOLUPTATE VELIT ESSE CILLUM DOLORE EU FUGIAT NULLA PARIATUR. EXCEPTEUR SINT OCCAECAT CUPIDATAT NON PROIDENT, SUNT IN CULPA QUI OFFICIA DESERUNT MOLLIT ANIM ID EST LABORUM SED UT PERSPICIATIS UNDE OMNIS.'
+        },
+        'LSW': {
+          image: 'path-to-lsw-image.jpg',
+          blurb: '<img src="https://via.placeholder.com/100x45/00AA00/FFFFFF?text=Detail+1" alt="LSW detail 1"><img src="https://via.placeholder.com/100x45/FFFFFF/00AA00?text=Detail+2" alt="LSW detail 2">LSW ENCAPSULATES THE ESSENCE OF LIVING SIMPLY WITH WATER THEMES AT ITS CORE. THE PROJECT EXPLORES THE RELATIONSHIP BETWEEN MINIMALISM AND NATURAL RESOURCES. SED UT PERSPICIATIS UNDE OMNIS ISTE NATUS ERROR SIT VOLUPTATEM ACCUSANTIUM DOLOREMQUE LAUDANTIUM, TOTAM REM APERIAM, EAQUE IPSA QUAE AB ILLO INVENTORE VERITATIS ET QUASI ARCHITECTO BEATAE VITAE DICTA SUNT EXPLICABO NEMO ENIM.'
+        },
+        'VANCE LIVING': {
+          image: 'path-to-vance-living-image.jpg',
+          blurb: '<img src="https://via.placeholder.com/100x45/AA00AA/FFFFFF?text=Detail+1" alt="Vance detail 1"><img src="https://via.placeholder.com/100x45/FFFFFF/AA00AA?text=Detail+2" alt="Vance detail 2">VANCE LIVING IS A BOLD PROJECT BRINGING MODULAR ARCHITECTURE INTO DAILY LIFE. THIS INNOVATIVE APPROACH REIMAGINES HOW WE DESIGN AND INHABIT SPACES. NEMO ENIM IPSAM VOLUPTATEM QUIA VOLUPTAS SIT ASPERNATUR AUT ODIT AUT FUGIT, SED QUIA CONSEQUUNTUR MAGNI DOLORES EOS QUI RATIONE VOLUPTATEM SEQUI NESCIUNT NEQUE PORRO QUISQUAM EST QUI DOLOREM IPSUM QUIA DOLOR SIT AMET CONSECTETUR.'
+        },
+        'ABOUT DNGR': {
+          image: 'https://dngrgoods.com/wp-content/uploads/2023/07/DSC01289-1.png',
+          blurb: '<img src="https://via.placeholder.com/100x45/FFaa00/000000?text=Detail+1" alt="DNGR detail 1"><img src="https://via.placeholder.com/100x45/000000/FFaa00?text=Detail+2" alt="DNGR detail 2">CREATIVE DIRECTOR DANIAL GRAHAM SPECIALIZES IN BRANDING IDENTITY, ART DIRECTION, TYPOGRAPHY, LOGO DESIGN, AND STRATEGIC DESIGN. WITH EXPERIENCE IN MOTION GRAPHICS, PHOTOGRAPHY, AND COMMERCIAL SIGNAGE PROJECT MANAGEMENT, DANIAL BRINGS A SOLUTIONS-ORIENTED APPROACH TO ALL CREATIVE ENDEAVORS. LOREM IPSUM DOLOR SIT AMET, CONSECTETUR ADIPISCING ELIT, SED DO EIUSMOD TEMPOR INCIDIDUNT UT LABORE ET DOLORE MAGNA ALIQUA UT ENIM AD MINIM VENIAM.'
+        },
+        'NOCTURNAL INGESTIONS': {
+          image: 'https://github.com/danial-dngr/dngrgoods/blob/main/Screen%20Shot%202022-11-03%20at%205.31.19%20pm.png?raw=true',
+          blurb: '<img src="https://via.placeholder.com/100x45/333333/CCCCCC?text=Detail+1" alt="Nocturnal detail 1"><img src="https://via.placeholder.com/100x45/CCCCCC/333333?text=Detail+2" alt="Nocturnal detail 2">NOCTURNAL INGESTIONS IS THE LATE NIGHT RESTAURANT IDENTITY DESIGNED WITH THE BENDIGO HOTEL IN COLLINGWOOD, A VENUE KNOWN FOR ITS LOUD GIGS AND CHEAP PINTS. THE SIGNAGE DESIGN TIES DIRECTLY TO THE VENUE\'S ROUGH INTERIOR AND PUNK ATMOSPHERE. UT LABORUM ET DOLORE MAGNA ALIQUA UT ENIM AD MINIM VENIAM QUIS NOSTRUD EXERCITATION ULLAMCO LABORIS NISI UT ALIQUIP EX EA COMMODO CONSEQUAT DUIS AUTE IRURE DOLOR IN REPREHENDERIT VOLUPTATE VELIT ESSE CILLUM DOLORE.'
+        },
+        'THAIMESE': {
+          image: 'https://github.com/danial-dngr/dngrgoods/blob/main/MMALE%20MODEL%20WEARING%20SHIRT%20FUll.jpg?raw=true',
+          blurb: '<img src="https://via.placeholder.com/100x45/333333/CCCCCC?text=Detail+1" alt="THAIMESE detail 1"><img src="https://via.placeholder.com/100x45/CCCCCC/333333?text=Detail+2" alt="THAIMESE detail 2">THAIMESE PROJECT DESCRIPTION HERE. THIS IS A BOLD PROJECT BRINGING MODULAR ARCHITECTURE INTO DAILY LIFE. THIS INNOVATIVE APPROACH REIMAGINES HOW WE DESIGN AND INHABIT SPACES. NEMO ENIM IPSAM VOLUPTATEM QUIA VOLUPTAS SIT ASPERNATUR AUT ODIT AUT FUGIT, SED QUIA CONSEQUUNTUR MAGNI DOLORES EOS QUI RATIONE VOLUPTATEM SEQUI.'
+        },
+        'KINETIC MOTION': {
+          image: 'https://github.com/danial-dngr/dngrgoods/blob/main/FINDING%20TIME%203.mp4?raw=true',
+          blurb: '<img src="https://via.placeholder.com/100x45/333333/CCCCCC?text=Detail+1" alt="Kinetic Motion detail 1"><img src="https://via.placeholder.com/100x45/CCCCCC/333333?text=Detail+2" alt="Kinetic Motion detail 2">KINETIC MOTION EXPLORES DYNAMIC MOVEMENT AND VISUAL RHYTHM. THIS PROJECT CELEBRATES THE INTERSECTION OF ART, DESIGN, AND HUMAN EMOTION. DUIS AUTE IRURE DOLOR IN REPREHENDERIT IN VOLUPTATE VELIT ESSE CILLUM DOLORE EU FUGIAT NULLA PARIATUR. EXCEPTEUR SINT OCCAECAT CUPIDATAT NON PROIDENT.'
+        },
+        'PROJECT NINE': { image: 'path-to-project-nine.jpg', blurb: 'PROJECT NINE DESCRIPTION. LOREM IPSUM DOLOR SIT AMET, CONSECTETUR ADIPISCING ELIT, SED DO EIUSMOD TEMPOR INCIDIDUNT UT LABORE ET DOLORE MAGNA ALIQUA.' },
+        'PROJECT TEN': { image: 'path-to-project-ten.jpg', blurb: 'PROJECT TEN DESCRIPTION. LOREM IPSUM DOLOR SIT AMET, CONSECTETUR ADIPISCING ELIT, SED DO EIUSMOD TEMPOR INCIDIDUNT UT LABORE ET DOLORE MAGNA ALIQUA.' },
+        'PROJECT ELEVEN': { image: 'path-to-project-eleven.jpg', blurb: 'PROJECT ELEVEN DESCRIPTION. LOREM IPSUM DOLOR SIT AMET, CONSECTETUR ADIPISCING ELIT, SED DO EIUSMOD TEMPOR INCIDIDUNT UT LABORE ET DOLORE MAGNA ALIQUA.' },
+        'PROJECT TWELVE': { image: 'path-to-project-twelve.jpg', blurb: 'PROJECT TWELVE DESCRIPTION. LOREM IPSUM DOLOR SIT AMET, CONSECTETUR ADIPISCING ELIT, SED DO EIUSMOD TEMPOR INCIDIDUNT UT LABORE ET DOLORE MAGNA ALIQUA.' },
+        'PROJECT THIRTEEN': { image: 'path-to-project-thirteen.jpg', blurb: 'PROJECT THIRTEEN DESCRIPTION. LOREM IPSUM DOLOR SIT AMET, CONSECTETUR ADIPISCING ELIT, SED DO EIUSMOD TEMPOR INCIDIDUNT UT LABORE ET DOLORE MAGNA ALIQUA.' },
+        'PROJECT FOURTEEN': { image: 'path-to-project-fourteen.jpg', blurb: 'PROJECT FOURTEEN DESCRIPTION. LOREM IPSUM DOLOR SIT AMET, CONSECTETUR ADIPISCING ELIT, SED DO EIUSMOD TEMPOR INCIDIDUNT UT LABORE ET DOLORE MAGNA ALIQUA.' },
+        'PROJECT FIFTEEN': { image: 'path-to-project-fifteen.jpg', blurb: 'PROJECT FIFTEEN DESCRIPTION. LOREM IPSUM DOLOR SIT AMET, CONSECTETUR ADIPISCING ELIT, SED DO EIUSMOD TEMPOR INCIDIDUNT UT LABORE ET DOLORE MAGNA ALIQUA.' },
+        'PROJECT SIXTEEN': { image: 'path-to-project-sixteen.jpg', blurb: 'PROJECT SIXTEEN DESCRIPTION. LOREM IPSUM DOLOR SIT AMET, CONSECTETUR ADIPISCING ELIT, SED DO EIUSMOD TEMPOR INCIDIDUNT UT LABORE ET DOLORE MAGNA ALIQUA.' },
+        'PROJECT SEVENTEEN': { image: 'path-to-project-seventeen.jpg', blurb: 'PROJECT SEVENTEEN DESCRIPTION. LOREM IPSUM DOLOR SIT AMET, CONSECTETUR ADIPISCING ELIT, SED DO EIUSMOD TEMPOR INCIDIDUNT UT LABORE ET DOLORE MAGNA ALIQUA.' },
+        'PROJECT EIGHTEEN': { image: 'path-to-project-eighteen.jpg', blurb: 'PROJECT EIGHTEEN DESCRIPTION. LOREM IPSUM DOLOR SIT AMET, CONSECTETUR ADIPISCING ELIT, SED DO EIUSMOD TEMPOR INCIDIDUNT UT LABORE ET DOLORE MAGNA ALIQUA.' },
+        'PROJECT NINETEEN': { image: 'path-to-project-nineteen.jpg', blurb: 'PROJECT NINETEEN DESCRIPTION. LOREM IPSUM DOLOR SIT AMET, CONSECTETUR ADIPISCING ELIT, SED DO EIUSMOD TEMPOR INCIDIDUNT UT LABORE ET DOLORE MAGNA ALIQUA.' },
+        'PROJECT TWENTY': { image: 'path-to-project-twenty.jpg', blurb: 'PROJECT TWENTY DESCRIPTION. LOREM IPSUM DOLOR SIT AMET, CONSECTETUR ADIPISCING ELIT, SED DO EIUSMOD TEMPOR INCIDIDUNT UT LABORE ET DOLORE MAGNA ALIQUA.' },
+        'PROJECT TWENTY-ONE': { image: 'path-to-project-twenty-one.jpg', blurb: 'PROJECT TWENTY-ONE DESCRIPTION. LOREM IPSUM DOLOR SIT AMET, CONSECTETUR ADIPISCING ELIT, SED DO EIUSMOD TEMPOR INCIDIDUNT UT LABORE ET DOLORE MAGNA ALIQUA.' },
+        'PROJECT TWENTY-TWO': { image: 'path-to-project-twenty-two.jpg', blurb: 'PROJECT TWENTY-TWO DESCRIPTION. LOREM IPSUM DOLOR SIT AMET, CONSECTETUR ADIPISCING ELIT, SED DO EIUSMOD TEMPOR INCIDIDUNT UT LABORE ET DOLORE MAGNA ALIQUA.' },
+        'PROJECT TWENTY-THREE': { image: 'path-to-project-twenty-three.jpg', blurb: 'PROJECT TWENTY-THREE DESCRIPTION. LOREM IPSUM DOLOR SIT AMET, CONSECTETUR ADIPISCING ELIT, SED DO EIUSMOD TEMPOR INCIDIDUNT UT LABORE ET DOLORE MAGNA ALIQUA.' },
+        'PROJECT TWENTY-FOUR': { image: 'path-to-project-twenty-four.jpg', blurb: 'PROJECT TWENTY-FOUR DESCRIPTION. LOREM IPSUM DOLOR SIT AMET, CONSECTETUR ADIPISCING ELIT, SED DO EIUSMOD TEMPOR INCIDIDUNT UT LABORE ET DOLORE MAGNA ALIQUA.' },
+        'PROJECT TWENTY-FIVE': { image: 'path-to-project-twenty-five.jpg', blurb: 'PROJECT TWENTY-FIVE DESCRIPTION. LOREM IPSUM DOLOR SIT AMET, CONSECTETUR ADIPISCING ELIT, SED DO EIUSMOD TEMPOR INCIDIDUNT UT LABORE ET DOLORE MAGNA ALIQUA.' }
+      };
+
+      function positionKey(project) { return `preview-pos:${project}`; }
+
+      function makeDraggable(preview, handle) {
+        let isDragging = false;
+        let dragStartX, dragStartY, startLeft, startTop;
+
+        const startDrag = (e) => {
+          if (gridMode) return;
+          isDragging = true;
+          const point = getPoint(e);
+          dragStartX = point.x;
+          dragStartY = point.y;
+          const rect = preview.getBoundingClientRect();
+          startLeft = rect.left;
+          startTop = rect.top;
+          preview.style.cursor = 'grabbing';
+          focusAndFront(preview);
+          e.preventDefault();
+        };
+
+        const onDrag = (e) => {
+          if (!isDragging || gridMode) return;
+          const point = getPoint(e);
+          const deltaX = point.x - dragStartX;
+          const deltaY = point.y - dragStartY;
+          const newLeft = startLeft + deltaX;
+          const newTop  = startTop + deltaY;
+          preview.style.transform = 'translate(0, 0)';
+          preview.style.left = `${newLeft}px`;
+          preview.style.top  = `${newTop}px`;
+        };
+
+        const stopDrag = () => {
+          if (!isDragging) return;
+          isDragging = false;
+          preview.style.cursor = 'default';
+          // Save position
+          const rect = preview.getBoundingClientRect();
+          localStorage.setItem(positionKey(preview.dataset.project), JSON.stringify({ left: rect.left, top: rect.top }));
+        };
+
+        // Pointer helpers
+        const getPoint = (e) => {
+          if (e.touches && e.touches[0]) return { x: e.touches[0].clientX, y: e.touches[0].clientY };
+          return { x: e.clientX, y: e.clientY };
+        };
+
+        // Mouse
+        handle.addEventListener('mousedown', startDrag);
+        window.addEventListener('mousemove', onDrag);
+        window.addEventListener('mouseup', stopDrag);
+        // Touch
+        handle.addEventListener('touchstart', startDrag, { passive: false });
+        window.addEventListener('touchmove', onDrag, { passive: false });
+        window.addEventListener('touchend', stopDrag);
+        window.addEventListener('touchcancel', stopDrag);
+      }
+
+      function focusAndFront(preview) {
+        preview.style.zIndex = String(++zIndex);
+        preview.focus({ preventScroll: true });
+      }
+
+      function createMediaEl(src, alt) {
+        const isVideo = /\.(mp4|webm|ogg)(\?.*)?$/i.test(src);
+        if (isVideo) {
+          const v = document.createElement('video');
+          v.src = src;
+          v.controls = true;
+          v.loop = true;
+          v.muted = true;
+          v.playsInline = true;
+          v.autoplay = true; // browser may gate autoplay; muted helps
+          v.setAttribute('aria-label', alt || 'Project video');
+          v.setAttribute('preload', 'metadata');
+          return v;
+        } else {
+          const img = document.createElement('img');
+          img.src = src;
+          img.alt = alt || 'Project image';
+          img.loading = 'lazy';
+          img.draggable = false;
+          return img;
+        }
+      }
+
+      function createPreviewContainer(project) {
+        const data = projectData[project] || { image: '', blurb: 'DETAILS COMING SOON.' };
+
+        if (openPreviews[project]) {
+          const preview = openPreviews[project];
+          if (!gridMode) {
+            // Center if not using saved position
+            if (!localStorage.getItem(positionKey(project))) {
+              preview.style.top = '50%';
+              preview.style.left = '50%';
+              preview.style.transform = 'translate(-50%, -50%)';
+            }
+          }
+          focusAndFront(preview);
+          return;
+        }
+
+        const preview = document.createElement('div');
+        preview.className = 'preview';
+        preview.tabIndex = 0; // focusable
+        preview.dataset.project = project;
         preview.style.top = '50%';
         preview.style.left = '50%';
         preview.style.transform = 'translate(-50%, -50%)';
-        preview.style.width = '600px';
-        preview.style.height = 'auto';
-        preview.style.gridColumn = 'auto';
-        preview.style.gridRow = 'auto';
-      });
-    };
+        preview.style.zIndex = String(++zIndex);
 
-    const createPreviewContainer = (project) => {
-      const data = projectData[project] || { image: '', blurb: 'DETAILS COMING SOON.' };
+        // Titlebar as drag handle
+        const titlebar = document.createElement('div');
+        titlebar.className = 'titlebar';
+        const titleEl = document.createElement('div');
+        titleEl.className = 'preview-title';
+        titleEl.textContent = project;
 
-      if (openPreviews[project]) {
-        const previewContainer = openPreviews[project];
-        if (!gridMode) {
-          previewContainer.style.top = '50%';
-          previewContainer.style.left = '50%';
-          previewContainer.style.transform = 'translate(-50%, -50%)';
+        const closeBtn = document.createElement('button');
+        closeBtn.className = 'close-button';
+        closeBtn.setAttribute('aria-label', `Close ${project} preview`);
+        closeBtn.title = 'Close (Esc)';
+        closeBtn.addEventListener('click', () => {
+          preview.remove();
+          delete openPreviews[project];
+          localStorage.removeItem(positionKey(project));
+        });
+
+        titlebar.appendChild(titleEl);
+        titlebar.appendChild(closeBtn);
+
+        const mediaWrap = document.createElement('div');
+        mediaWrap.className = 'preview-image-wrapper';
+        mediaWrap.appendChild(createMediaEl(data.image, `${project} Media`));
+
+        const blurb = document.createElement('p');
+        blurb.className = 'preview-blurb';
+        blurb.innerHTML = data.blurb || 'DETAILS COMING SOON.';
+
+        preview.appendChild(titlebar);
+        preview.appendChild(mediaWrap);
+        preview.appendChild(blurb);
+
+        // Drag only via titlebar
+        makeDraggable(preview, titlebar);
+
+        // Double-click title to toggle max width (simple maximize)
+        titlebar.addEventListener('dblclick', () => {
+          const isMax = preview.dataset.maximized === 'true';
+          if (isMax) {
+            preview.style.width = 'min(80vw, 600px)';
+            preview.dataset.maximized = 'false';
+          } else {
+            preview.style.width = 'min(95vw, 1100px)';
+            preview.dataset.maximized = 'true';
+          }
+        });
+
+        // Prevent selecting text from triggering drag handle accidentally
+        titlebar.addEventListener('selectstart', (e) => e.preventDefault());
+
+        if (gridMode) {
+          const size = Object.keys(openPreviews).length === 0 ? { col: 2, row: 2 } : getRandomGridSize();
+          assignGridStyles(preview, size);
+          gridContainer.appendChild(preview);
+        } else {
+          document.body.appendChild(preview);
         }
-        return;
+
+        // Save reference & focus
+        openPreviews[project] = preview;
+        focusAndFront(preview);
+
+        // If saved pos exists and not grid, restore
+        if (!gridMode) {
+          const pos = JSON.parse(localStorage.getItem(positionKey(project) )|| 'null');
+          if (pos) {
+            preview.style.transform = 'translate(0, 0)';
+            preview.style.left = `${pos.left}px`;
+            preview.style.top  = `${pos.top}px`;
+          }
+        }
       }
 
-      const previewContainer = document.createElement('div');
-      previewContainer.className = 'preview';
-      previewContainer.style.top = '50%';
-      previewContainer.style.left = '50%';
-      previewContainer.style.transform = 'translate(-50%, -50%)';
-      previewContainer.style.zIndex = `${++zIndex}`;
-
-      previewContainer.innerHTML = `
-        <button class="close-button"></button>
-        <div class="preview-image-wrapper">
-          <img src="${data.image}" alt="${project} Image">
-        </div>
-        <div class="preview-title">${project}</div>
-        <p class="preview-blurb">${data.blurb}</p>
-      `;
-
-      previewContainer.querySelector('.close-button').addEventListener('click', () => {
-        previewContainer.remove();
-        delete openPreviews[project];
+      // List click and keyboard interactions
+      projectList.querySelectorAll('li[data-project]').forEach((item) => {
+        const openHandler = () => createPreviewContainer(item.getAttribute('data-project'));
+        item.addEventListener('click', openHandler);
+        item.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            openHandler();
+          }
+        });
       });
 
-      makeDraggable(previewContainer);
+      // Keyboard shortcuts: D, G, Esc
+      window.addEventListener('keydown', (e) => {
+        if (e.target && ['INPUT','TEXTAREA','SELECT'].includes(e.target.tagName)) return;
 
-      if (gridMode) {
-        const size = Object.keys(openPreviews).length === 0 ? { col: 2, row: 2 } : getRandomGridSize();
-        previewContainer.style.position = 'relative';
-        previewContainer.style.transform = 'none';
-        previewContainer.style.top = 'auto';
-        previewContainer.style.left = 'auto';
-        previewContainer.style.width = '100%';
-        previewContainer.style.height = '100%';
-        previewContainer.style.gridColumn = `span ${size.col}`;
-        previewContainer.style.gridRow = `span ${size.row}`;
-        gridContainer.appendChild(previewContainer);
-      } else {
-        document.body.appendChild(previewContainer);
-      }
-
-      openPreviews[project] = previewContainer;
-    };
-
-    document.querySelectorAll('.content ul li').forEach((item) => {
-      item.addEventListener('click', () => {
-        const project = item.getAttribute('data-project');
-        createPreviewContainer(project);
+        if (e.key.toLowerCase() === 'd') {
+          invertBtn.click();
+        } else if (e.key.toLowerCase() === 'g') {
+          gridBtn.click();
+        } else if (e.key === 'Escape') {
+          // Close the topmost preview if any
+          const top = Object.values(openPreviews).sort((a,b) => (parseInt(b.style.zIndex||'0',10) - parseInt(a.style.zIndex||'0',10)))[0];
+          if (top) {
+            top.querySelector('.close-button')?.click();
+          }
+        }
       });
-    });
+
+      // Prevent image drag ghost across the page
+      document.addEventListener('dragstart', (e) => {
+        if (e.target && e.target.tagName === 'IMG') e.preventDefault();
+      });
+
+    })();
   </script>
 </body>
 </html>
